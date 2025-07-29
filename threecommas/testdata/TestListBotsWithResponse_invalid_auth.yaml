@@ -1,0 +1,52 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/bots
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 102
+        body: '{"error":"api_key_invalid_or_expired","error_description":"Unauthorized. Invalid or expired api key."}'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9668267f7c05e51b-TXL
+            Content-Length:
+                - "102"
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 28 Jul 2025 23:28:00 GMT
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            X-Request-Id:
+                - 00314fee60a66bc78de33ea6eeb6d806
+            X-Runtime:
+                - "0.014414"
+        status: 401 Unauthorized
+        code: 401
+        duration: 193.509625ms

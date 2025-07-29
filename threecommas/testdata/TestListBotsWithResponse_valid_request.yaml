@@ -1,0 +1,55 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/bots
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"id":16403596,"account_id":33256512,"is_enabled":true,"max_safety_orders":3,"active_safety_orders_count":3,"pairs":["USDT_ETH"],"strategy_list":[{"options":{},"strategy":"nonstop"}],"close_strategy_list":[],"safety_strategy_list":[],"max_active_deals":1,"active_deals_count":1,"deletable?":false,"created_at":"2025-07-23T02:51:11.184Z","updated_at":"2025-07-23T02:51:11.936Z","trailing_enabled":false,"tsl_enabled":false,"deal_start_delay_seconds":null,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"disable_after_deals_count":null,"deals_counter":null,"allowed_deals_on_same_pair":null,"easy_form_supported":false,"close_deals_timeout":null,"url_secret":"7d2312bacb","take_profit_steps":[],"name":"ETH/USDT Classic trading","take_profit":"1.0","min_profit_percentage":"0.0","base_order_volume":"20.0","safety_order_volume":"15.0","safety_order_step_percentage":"1.0","safety_order_calculation_mode":"base","take_profit_type":"total","min_profit_type":null,"type":"Bot::SingleBot","martingale_volume_coefficient":"1.7","martingale_step_coefficient":"4.0","stop_loss_percentage":"0.0","cooldown":"0","btc_price_limit":"0.0","strategy":"long","min_volume_btc_24h":"0.0","profit_currency":"quote_currency","min_price":null,"max_price":null,"stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","account_name":"Demo Account 2080398","trailing_deviation":"0.2","finished_deals_profit_usd":"2.58634051","finished_deals_count":"7","leverage_type":"not_specified","leverage_custom_value":null,"start_order_type":"limit","active_deals_usd_profit":"-0.855203622","reinvesting_percentage":"0.0","risk_reduction_percentage":"0.0","reinvested_volume_usd":null,"min_price_percentage":null,"max_price_percentage":null}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 96681f911d7fe525-TXL
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 28 Jul 2025 23:23:16 GMT
+            Etag:
+                - W/"f4aa6b51e48acfeb4accca9e891fbae8"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - 754097588e2f210d81546261878713b8
+            X-Runtime:
+                - "0.087169"
+        status: 200 OK
+        code: 200
+        duration: 366.546708ms

@@ -1,0 +1,10 @@
+package: threecommas
+output: threecommas/openapi.gen.go
+generate:
+  models: true
+  client: true
+
+output-options:
+  skip-prune: true
+  prefer-skip-optional-pointer: false
+  nullable-type: true
