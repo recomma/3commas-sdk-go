@@ -98,27 +98,48 @@ type ThreeCommasClient struct {
 	*ClientWithResponses
 }
 
-// TradesOfDeal is a thin wrapper around GetTradesOfDealWithResponse that
+// GetTradesForDeal is a thin wrapper around GetTradesOfDealWithResponse that
 // returns the slice of MarketOrder on 200 OK, or an error otherwise.
-func (c *ThreeCommasClient) TradesOfDeal(
-	ctx context.Context,
-	dealId DealPathId,
-) ([]MarketOrder, error) {
+func (c *ThreeCommasClient) GetTradesForDeal(ctx context.Context, dealId DealPathId) ([]MarketOrder, error) {
 	resp, err := c.GetTradesOfDealWithResponse(ctx, dealId)
 	if err != nil {
-		return nil, fmt.Errorf("could not list trades for deal %d: %w", dealId, err)
+		return nil, fmt.Errorf("request failed for deal %d: %w", dealId, err)
 	}
 
-	if resp.StatusCode() != http.StatusOK {
-		if err := GetErrorFromResponse(resp); err != nil {
-			return nil, err
-		}
-		return nil, fmt.Errorf("unexpected status: %d", resp.StatusCode())
+	if err := GetErrorFromResponse(resp); err != nil {
+		return nil, err
 	}
 
-	// should never be nil on 200, but guard just in case
-	if resp.JSON200 == nil {
-		return nil, fmt.Errorf("no trades returned for deal %d", dealId)
+	return *resp.JSON200, nil
+}
+
+// GetListOfDeals is a thin wrapper around ListDealsWithResponse that
+// returns the slice of Deal on 200 OK, or an error otherwise.
+func (c *ThreeCommasClient) GetListOfDeals(ctx context.Context, opts ...ListDealsParamsOption) ([]Deal, error) {
+	p := ListDealsParamsFromOptions(opts...)
+	resp, err := c.ListDealsWithResponse(ctx, p)
+	if err != nil {
+		return nil, fmt.Errorf("request failed: %w, params: %v", err, p)
+	}
+
+	if err := GetErrorFromResponse(resp); err != nil {
+		return nil, err
+	}
+
+	return *resp.JSON200, nil
+}
+
+// ListBots is a thin wrapper around ListBotsWithResponse that
+// returns the slice of Deal on 200 OK, or an error otherwise.
+func (c *ThreeCommasClient) ListBots(ctx context.Context, opts ...ListBotsParamsOption) ([]Bot, error) {
+	p := ListBotsParamsFromOptions(opts...)
+	resp, err := c.ListBotsWithResponse(ctx, p)
+	if err != nil {
+		return nil, fmt.Errorf("request failed: %w, params: %v", err, p)
+	}
+
+	if err := GetErrorFromResponse(resp); err != nil {
+		return nil, err
 	}
 
 	return *resp.JSON200, nil
@@ -137,6 +158,11 @@ func (e *APIError) Error() string {
 }
 
 func GetErrorFromResponse(v APIErrorResponses) error {
+	// Treat anything in the 200–299 range as OK:
+	if 200 <= v.StatusCode() && v.StatusCode() <= 299 {
+		return nil
+	}
+
 	var payload *ErrorResponse
 
 	switch v.StatusCode() {
@@ -144,6 +170,8 @@ func GetErrorFromResponse(v APIErrorResponses) error {
 		payload = v.GetJSON400()
 	case 401:
 		payload = v.GetJSON401()
+	case 404:
+		payload = v.GetJSON404()
 	case 418:
 		payload = v.GetJSON418()
 	case 429:

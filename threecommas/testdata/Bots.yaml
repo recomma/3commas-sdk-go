@@ -108,3 +108,103 @@ interactions:
         status: 200 OK
         code: 200
         duration: 418.381625ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/deals/1374390720784/market_orders
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"error":"not_found","error_description":"Not Found"}'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 966c7f182c72e519-TXL
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 29 Jul 2025 12:07:32 GMT
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            X-Request-Id:
+                - a6f42937647a0ae88c9b8527da661cd7
+            X-Runtime:
+                - "0.039269"
+        status: 404 Not Found
+        code: 404
+        duration: 258.693167ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/deals/2362612144/market_orders
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"order_id":"1491405874","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-07-23T02:51:28.327Z","updated_at":"2025-07-24T14:48:03.004Z","quantity":"0.0147","quantity_remaining":"0.0147","total":"0.0","rate":"2957.37","average_price":"0.0"},{"order_id":"1491405868","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-07-23T02:51:28.115Z","updated_at":"2025-07-23T17:20:09.409Z","quantity":"0.0072","quantity_remaining":"0.0","total":"25.631181576","rate":"3556.33","average_price":"3559.88633"},{"order_id":"1491405866","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-07-23T02:51:27.950Z","updated_at":"2025-07-23T05:33:19.336Z","quantity":"0.0041","quantity_remaining":"0.0","total":"15.210081887","rate":"3706.07","average_price":"3709.77607"},{"order_id":"1491405862","order_type":"SELL","deal_order_type":"Take Profit","cancellable":false,"status_string":"Filled","created_at":"2025-07-23T02:51:27.864Z","updated_at":"2025-07-24T14:48:02.379Z","quantity":"0.0167","quantity_remaining":"0.0","total":"61.666815456","rate":"3696.32","average_price":"3692.62368"},{"order_id":"1491405823","order_type":"BUY","deal_order_type":"Base","cancellable":false,"status_string":"Filled","created_at":"2025-07-23T02:51:26.938Z","updated_at":"2025-07-23T02:51:27.326Z","quantity":"0.0054","quantity_remaining":"0.0","total":"20.214952758","rate":"3739.92","average_price":"3743.50977"}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 966ce678d9b3e529-TXL
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 29 Jul 2025 13:18:06 GMT
+            Etag:
+                - W/"2cd7026d8e467ab0e185ec67cc040b7b"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - faba4a1333a41a51d5fa5aadacbf1bfd
+            X-Runtime:
+                - "0.073567"
+        status: 200 OK
+        code: 200
+        duration: 198.253292ms

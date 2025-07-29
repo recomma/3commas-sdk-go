@@ -4117,6 +4117,7 @@ type GetCurrencyRatesResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4146,6 +4147,7 @@ type GetCurrencyRatesWithLeverageDataResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4175,6 +4177,7 @@ type GetMarketListResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4204,6 +4207,7 @@ type GetMarketPairsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4233,6 +4237,7 @@ type ListBotsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4262,6 +4267,7 @@ type CreateDcaBotResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4291,6 +4297,7 @@ type GetPairsBlacklistResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4320,6 +4327,7 @@ type GetBotsStatsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4349,6 +4357,7 @@ type GetBotsStatsByDateResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4378,6 +4387,7 @@ type ListStrategiesResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4407,6 +4417,7 @@ type UpdatePairsBlacklistResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4436,6 +4447,7 @@ type CancelAllDealsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4465,6 +4477,7 @@ type CopyAndCreateBotResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4494,6 +4507,7 @@ type GetDealsStatsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4552,6 +4566,7 @@ type DisableBotResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4581,6 +4596,7 @@ type EnableBotResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4640,6 +4656,7 @@ type GetProfitByDayResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4699,6 +4716,7 @@ type UpdateBotResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4728,6 +4746,7 @@ type ListDealsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4757,6 +4776,7 @@ type CancelDealResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4786,6 +4806,7 @@ type GetDealDataForAddingFundsResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4815,6 +4836,7 @@ type GetTradesOfDealResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4844,6 +4866,7 @@ type PanicSellDealResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4873,6 +4896,7 @@ type PanicSellDealStepResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4932,6 +4956,7 @@ type UpdateDealResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -4961,6 +4986,7 @@ type ValidateAuthenticationResponse struct {
 	JSON400      *BadRequest
 	JSON401      *Unauthorized
 	JSON403      *Forbidden
+	JSON404      *NotFound
 	JSON418      *IPAutoBanned
 	JSON429      *RateLimitExceeded
 	JSON500      *InternalServerError
@@ -5327,6 +5353,13 @@ func ParseGetCurrencyRatesResponse(rsp *http.Response) (*GetCurrencyRatesRespons
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -5401,6 +5434,13 @@ func ParseGetCurrencyRatesWithLeverageDataResponse(rsp *http.Response) (*GetCurr
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -5477,6 +5517,13 @@ func ParseGetMarketListResponse(rsp *http.Response) (*GetMarketListResponse, err
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -5551,6 +5598,13 @@ func ParseGetMarketPairsResponse(rsp *http.Response) (*GetMarketPairsResponse, e
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -5627,6 +5681,13 @@ func ParseListBotsResponse(rsp *http.Response) (*ListBotsResponse, error) {
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -5701,6 +5762,13 @@ func ParseCreateDcaBotResponse(rsp *http.Response) (*CreateDcaBotResponse, error
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -5777,6 +5845,13 @@ func ParseGetPairsBlacklistResponse(rsp *http.Response) (*GetPairsBlacklistRespo
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -5851,6 +5926,13 @@ func ParseGetBotsStatsResponse(rsp *http.Response) (*GetBotsStatsResponse, error
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -5927,6 +6009,13 @@ func ParseGetBotsStatsByDateResponse(rsp *http.Response) (*GetBotsStatsByDateRes
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6001,6 +6090,13 @@ func ParseListStrategiesResponse(rsp *http.Response) (*ListStrategiesResponse, e
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -6077,6 +6173,13 @@ func ParseUpdatePairsBlacklistResponse(rsp *http.Response) (*UpdatePairsBlacklis
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6151,6 +6254,13 @@ func ParseCancelAllDealsResponse(rsp *http.Response) (*CancelAllDealsResponse, e
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -6227,6 +6337,13 @@ func ParseCopyAndCreateBotResponse(rsp *http.Response) (*CopyAndCreateBotRespons
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6301,6 +6418,13 @@ func ParseGetDealsStatsResponse(rsp *http.Response) (*GetDealsStatsResponse, err
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -6452,6 +6576,13 @@ func ParseDisableBotResponse(rsp *http.Response) (*DisableBotResponse, error) {
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6526,6 +6657,13 @@ func ParseEnableBotResponse(rsp *http.Response) (*EnableBotResponse, error) {
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -6684,6 +6822,13 @@ func ParseGetProfitByDayResponse(rsp *http.Response) (*GetProfitByDayResponse, e
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6841,6 +6986,13 @@ func ParseUpdateBotResponse(rsp *http.Response) (*UpdateBotResponse, error) {
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -6915,6 +7067,13 @@ func ParseListDealsResponse(rsp *http.Response) (*ListDealsResponse, error) {
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -6991,6 +7150,13 @@ func ParseCancelDealResponse(rsp *http.Response) (*CancelDealResponse, error) {
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -7065,6 +7231,13 @@ func ParseGetDealDataForAddingFundsResponse(rsp *http.Response) (*GetDealDataFor
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -7141,6 +7314,13 @@ func ParseGetTradesOfDealResponse(rsp *http.Response) (*GetTradesOfDealResponse,
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -7216,6 +7396,13 @@ func ParsePanicSellDealResponse(rsp *http.Response) (*PanicSellDealResponse, err
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -7290,6 +7477,13 @@ func ParsePanicSellDealStepResponse(rsp *http.Response) (*PanicSellDealStepRespo
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
@@ -7448,6 +7642,13 @@ func ParseUpdateDealResponse(rsp *http.Response) (*UpdateDealResponse, error) {
 		}
 		response.JSON403 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -7522,6 +7723,13 @@ func ParseValidateAuthenticationResponse(rsp *http.Response) (*ValidateAuthentic
 			return nil, err
 		}
 		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 418:
 		var dest IPAutoBanned

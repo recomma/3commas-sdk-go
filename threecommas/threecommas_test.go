@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/cassette"
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/recorder"
 )
@@ -41,31 +42,39 @@ func defaultRecorderOpts(record bool) []recorder.Option {
 	return opts
 }
 
-func TestListBotsWithResponse(t *testing.T) {
+func TestListBots(t *testing.T) {
 	type tc struct {
 		name         string
 		cassetteName string
 		config       ClientConfig
 		params       *ListBotsParams
-		wantStatus   int
-		wantErrCode  string
+		options      []ListBotsParamsOption
+		wantErr      string
 		record       bool
 	}
 
 	cases := []tc{
 		{
-			name:        "invalid auth",
-			config:      ClientConfig{APIKey: "somefakeapikey", PrivatePEM: []byte(fakeKey)},
-			params:      &ListBotsParams{},
-			wantStatus:  http.StatusUnauthorized,
-			wantErrCode: "API error 401: Unauthorized. Invalid or expired api key.",
+			name:    "invalid auth",
+			config:  ClientConfig{APIKey: "somefakeapikey", PrivatePEM: []byte(fakeKey)},
+			params:  &ListBotsParams{},
+			options: []ListBotsParamsOption{},
+			wantErr: "API error 401: Unauthorized. Invalid or expired api key.",
 		},
 		{
 			name:         "valid request",
 			cassetteName: "Bots",
 			config:       config,
 			params:       &ListBotsParams{},
-			wantStatus:   http.StatusOK,
+			options:      []ListBotsParamsOption{},
+		},
+		{
+			name:   "filter on account",
+			config: config,
+			params: &ListBotsParams{},
+			options: []ListBotsParamsOption{
+				WithAccountIdForListBots(33256512),
+			},
 		},
 	}
 
@@ -76,124 +85,116 @@ func TestListBotsWithResponse(t *testing.T) {
 				tt.Fatalf("Could not create client: %s", err)
 			}
 
-			resp, err := client.ListBotsWithResponse(context.Background(), &ListBotsParams{})
-			if err != nil {
-				tt.Fatalf("Could not list bots: %s", err)
-			}
-
-			if got := resp.StatusCode(); got != tc.wantStatus {
-				tt.Errorf("status = %d; want %d", got, tc.wantStatus)
-			}
-
-			if tc.wantErrCode != "" {
-				errResp := GetErrorFromResponse(resp)
-				if errResp == nil {
-					tt.Errorf("expected error code %q, got none", tc.wantErrCode)
-				} else if errResp.Error() != tc.wantErrCode {
-					tt.Errorf("error code = %q; want %q", errResp.Error(), tc.wantErrCode)
-				}
+			bots, err := client.ListBots(context.Background(), tc.options...)
+			if tc.wantErr != "" {
+				require.EqualError(tt, err, tc.wantErr)
 				return
 			}
 
-			if resp.JSON200 == nil {
-				tt.Error("expected JSON200 payload, got nil")
-			} else if len(*resp.JSON200) == 0 {
-				tt.Error("expected at least one bot, got empty list")
-			}
+			require.NoError(tt, err)
+			require.NotEmpty(tt, bots, "expected at least one bot, got empty list")
 		})
 	}
 }
 
 func TestListDealsWithResponse(t *testing.T) {
 	type tc struct {
-		name             string
-		cassetteName     string
-		config           ClientConfig
-		params           *ListDealsParams
-		wantStatus       int
-		wantErrCode      string
-		record           bool
-		requiresListBots bool
+		name         string
+		cassetteName string
+		config       ClientConfig
+		options      []ListDealsParamsOption
+		wantErr      string
+		record       bool
+		bots         []Bot
 	}
 
 	cases := []tc{
 		{
-			name:             "valid request",
-			cassetteName:     "Bots",
-			config:           config,
-			params:           &ListDealsParams{},
-			wantStatus:       http.StatusOK,
-			requiresListBots: true,
+			name:         "valid request",
+			cassetteName: "Bots",
+			config:       config,
 			// record:       true,
 		},
-		// {
-		// 	// this test is futile, their API just sends back StatusOK
-		// 	// on a Bot that doesn't exist for us
-		// 	name: "invalid request",
-		// 	// cassetteName:     "Bots",
-		// 	config:           config,
-		// 	params:           &ListDealsParams{BotId: getIntPointer(5)},
-		// 	wantStatus:       http.StatusOK,
-		// 	requiresListBots: false,
-		// 	// record:           true,
-		// },
+		{
+			name:         "specific bot 16403596",
+			cassetteName: "Bots",
+			config:       config,
+			options: []ListDealsParamsOption{
+				WithBotIdForListDeals(16403596),
+			},
+		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(tt *testing.T) {
 			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
-			if err != nil {
-				tt.Fatalf("Could not create client: %s", err)
-			}
+			require.NoErrorf(tt, err, "could not create client")
 
-			// determine which bot IDs to test against
-			var botIDs []int
-			if tc.requiresListBots {
-				listResp, err := client.ListBotsWithResponse(context.Background(), &ListBotsParams{})
+			bots := tc.bots
+			if len(bots) == 0 {
+				bots, err = client.ListBots(context.Background())
 				if err != nil {
-					tt.Fatalf("Could not list bots: %s", err)
+					tt.Fatalf("cannot list bots: %s", err)
 				}
-
-				if listResp.StatusCode() != http.StatusOK {
-					if errResponse := GetErrorFromResponse(listResp); errResponse != nil {
-						tt.Fatal(errResponse)
-					}
-					tt.Fatalf("unexpected status: %d", listResp.StatusCode())
-				}
-			} else {
-				if tc.params.BotId == nil {
-					t.Fatal("test case must provide BotId when requiresListBots is false")
-				}
-				botIDs = []int{*tc.params.BotId}
 			}
 
-			for _, id := range botIDs {
-				tc.params.BotId = &id
-				resp, err := client.ListDealsWithResponse(context.Background(), tc.params)
+			for _, bot := range bots {
+				tc.options = append(tc.options, WithBotIdForListDeals(bot.Id))
+				deals, err := client.GetListOfDeals(context.Background(), tc.options...)
 				if err != nil {
 					tt.Fatalf("Could not list deals: %s", err)
 				}
 
-				if got := resp.StatusCode(); got != tc.wantStatus {
-					tt.Errorf("status = %d; want %d", got, tc.wantStatus)
-				}
-
-				if tc.wantErrCode != "" {
-					errResp := GetErrorFromResponse(resp)
-					if errResp == nil {
-						tt.Errorf("expected error code %q, got none", tc.wantErrCode)
-					} else if errResp.Error() != tc.wantErrCode {
-						tt.Errorf("error code = %q; want %q", errResp.Error(), tc.wantErrCode)
-					}
+				if tc.wantErr != "" {
+					require.EqualError(tt, err, tc.wantErr)
 					return
 				}
 
-				if resp.JSON200 == nil {
-					tt.Error("expected JSON200 payload, got nil")
-				} else if len(*resp.JSON200) == 0 {
-					tt.Error("expected at least one deal, got empty list")
-				}
+				require.NoError(tt, err)
+				require.NotEmpty(tt, deals, "expected at least one deal, got empty list")
 			}
+		})
+	}
+}
+
+func TestGetTradesForDeal(t *testing.T) {
+	type tc struct {
+		name         string
+		cassetteName string
+		config       ClientConfig
+		params       DealPathId
+		wantErr      string
+		record       bool
+	}
+
+	cases := []tc{
+		{
+			name:         "404",
+			cassetteName: "Bots",
+			config:       config,
+			params:       1374390720784,
+			wantErr:      "API error 404: Not Found",
+		},
+		{
+			name:         "valid request",
+			cassetteName: "Bots",
+			config:       config,
+			params:       2362612144,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(tt *testing.T) {
+			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
+			require.NoErrorf(tt, err, "could not create client")
+
+			trades, err := client.GetTradesForDeal(context.Background(), tc.params)
+			if tc.wantErr != "" {
+				require.EqualError(tt, err, tc.wantErr)
+				return
+			}
+
+			require.NoError(tt, err)
+			require.NotEmpty(tt, trades, "expected at least one trade, got empty list")
 		})
 	}
 }

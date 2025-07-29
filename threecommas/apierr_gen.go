@@ -26,6 +26,14 @@ type GetJSON403 interface {
 	JSON403() *Forbidden
 }
 
+func (r *GetCurrencyRatesResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
+type GetJSON404 interface {
+	JSON404() *NotFound
+}
+
 func (r *GetCurrencyRatesResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -70,6 +78,10 @@ func (r *GetCurrencyRatesWithLeverageDataResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *GetCurrencyRatesWithLeverageDataResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *GetCurrencyRatesWithLeverageDataResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -96,6 +108,10 @@ func (r *GetMarketListResponse) GetJSON401() *Unauthorized {
 
 func (r *GetMarketListResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *GetMarketListResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *GetMarketListResponse) GetJSON418() *IPAutoBanned {
@@ -126,6 +142,10 @@ func (r *GetMarketPairsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *GetMarketPairsResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *GetMarketPairsResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -152,6 +172,10 @@ func (r *ListBotsResponse) GetJSON401() *Unauthorized {
 
 func (r *ListBotsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *ListBotsResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *ListBotsResponse) GetJSON418() *IPAutoBanned {
@@ -182,6 +206,10 @@ func (r *CreateDcaBotResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *CreateDcaBotResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *CreateDcaBotResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -208,6 +236,10 @@ func (r *GetPairsBlacklistResponse) GetJSON401() *Unauthorized {
 
 func (r *GetPairsBlacklistResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *GetPairsBlacklistResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *GetPairsBlacklistResponse) GetJSON418() *IPAutoBanned {
@@ -238,6 +270,10 @@ func (r *GetBotsStatsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *GetBotsStatsResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *GetBotsStatsResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -264,6 +300,10 @@ func (r *GetBotsStatsByDateResponse) GetJSON401() *Unauthorized {
 
 func (r *GetBotsStatsByDateResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *GetBotsStatsByDateResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *GetBotsStatsByDateResponse) GetJSON418() *IPAutoBanned {
@@ -294,6 +334,10 @@ func (r *ListStrategiesResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *ListStrategiesResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *ListStrategiesResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -320,6 +364,10 @@ func (r *UpdatePairsBlacklistResponse) GetJSON401() *Unauthorized {
 
 func (r *UpdatePairsBlacklistResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *UpdatePairsBlacklistResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *UpdatePairsBlacklistResponse) GetJSON418() *IPAutoBanned {
@@ -350,6 +398,10 @@ func (r *CancelAllDealsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *CancelAllDealsResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *CancelAllDealsResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -378,6 +430,10 @@ func (r *CopyAndCreateBotResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *CopyAndCreateBotResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *CopyAndCreateBotResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -404,6 +460,10 @@ func (r *GetDealsStatsResponse) GetJSON401() *Unauthorized {
 
 func (r *GetDealsStatsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *GetDealsStatsResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *GetDealsStatsResponse) GetJSON418() *IPAutoBanned {
@@ -438,10 +498,6 @@ func (r *DeleteBotResponse) GetJSON404() *NotFound {
 	return r.JSON404
 }
 
-type GetJSON404 interface {
-	JSON404() *NotFound
-}
-
 func (r *DeleteBotResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -470,6 +526,10 @@ func (r *DisableBotResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *DisableBotResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *DisableBotResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -496,6 +556,10 @@ func (r *EnableBotResponse) GetJSON401() *Unauthorized {
 
 func (r *EnableBotResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *EnableBotResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *EnableBotResponse) GetJSON418() *IPAutoBanned {
@@ -558,6 +622,10 @@ func (r *GetProfitByDayResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *GetProfitByDayResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *GetProfitByDayResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -618,6 +686,10 @@ func (r *UpdateBotResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *UpdateBotResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *UpdateBotResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -644,6 +716,10 @@ func (r *ListDealsResponse) GetJSON401() *Unauthorized {
 
 func (r *ListDealsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *ListDealsResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *ListDealsResponse) GetJSON418() *IPAutoBanned {
@@ -674,6 +750,10 @@ func (r *CancelDealResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *CancelDealResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *CancelDealResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -700,6 +780,10 @@ func (r *GetDealDataForAddingFundsResponse) GetJSON401() *Unauthorized {
 
 func (r *GetDealDataForAddingFundsResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *GetDealDataForAddingFundsResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *GetDealDataForAddingFundsResponse) GetJSON418() *IPAutoBanned {
@@ -730,6 +814,10 @@ func (r *GetTradesOfDealResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *GetTradesOfDealResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *GetTradesOfDealResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -758,6 +846,10 @@ func (r *PanicSellDealResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *PanicSellDealResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *PanicSellDealResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -784,6 +876,10 @@ func (r *PanicSellDealStepResponse) GetJSON401() *Unauthorized {
 
 func (r *PanicSellDealStepResponse) GetJSON403() *Forbidden {
 	return r.JSON403
+}
+
+func (r *PanicSellDealStepResponse) GetJSON404() *NotFound {
+	return r.JSON404
 }
 
 func (r *PanicSellDealStepResponse) GetJSON418() *IPAutoBanned {
@@ -846,6 +942,10 @@ func (r *UpdateDealResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *UpdateDealResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *UpdateDealResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -874,6 +974,10 @@ func (r *ValidateAuthenticationResponse) GetJSON403() *Forbidden {
 	return r.JSON403
 }
 
+func (r *ValidateAuthenticationResponse) GetJSON404() *NotFound {
+	return r.JSON404
+}
+
 func (r *ValidateAuthenticationResponse) GetJSON418() *IPAutoBanned {
 	return r.JSON418
 }
@@ -892,12 +996,13 @@ func (r *ValidateAuthenticationResponse) GetJSON504() *GatewayTimeout {
 
 type APIErrorResponses interface {
 	StatusCode() int
-	GetJSON403() *Forbidden
-	GetJSON500() *InternalServerError
-	GetJSON504() *GatewayTimeout
+	GetJSON404() *NotFound
 	GetJSON400() *BadRequest
-	GetJSON401() *Unauthorized
+	GetJSON403() *Forbidden
 	GetJSON418() *IPAutoBanned
 	GetJSON429() *RateLimitExceeded
+	GetJSON500() *InternalServerError
+	GetJSON504() *GatewayTimeout
+	GetJSON401() *Unauthorized
 }
 
