@@ -35,7 +35,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resp, err := client.ListBotsWithResponse(context.Background(), &threecommas.ListBotsParams{})
+	resp, err := client.ListBotsWithResponse(context.Background(),
+        &threecommas.ListBotsParams{})
 	if err != nil {
 		panic(err)
 	}
