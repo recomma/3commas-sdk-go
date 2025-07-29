@@ -35,15 +35,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resp, err := client.ListBotsWithResponse(context.Background(),
-        &threecommas.ListBotsParams{})
-	if err != nil {
-		panic(err)
-	}
+    // List all bots for a specific account, limit the results, and sort by profit
+    bots, err := client.ListBots(
+        context.Background(),
+        threecommas.WithAccountIdForListBots(12345678),
+        threecommas.WithLimitForListBots(50),
+        threecommas.WithSortByForListBots(threecommas.ListBotsParamsSortByProfit),
+    )
+    if err != nil {
+        log.Fatalf("failed to list bots: %v", err)
+    }
 
-	for _, bot := range *resp.JSON200 {
-		fmt.Println("Bot ID:", bot.Id, "Name:", *bot.Name)
-	}
+    for _, bot := range bots {
+        fmt.Printf("Bot ID: %d, Name: %s, Profit: %s\n", bot.Id, *bot.Name, bot.ActiveDealsUsdProfit)
+    }
 }
 ```
 
