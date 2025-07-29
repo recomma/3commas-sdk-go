@@ -62,19 +62,41 @@ func TestListBots(t *testing.T) {
 			wantErr: "API error 401: Unauthorized. Invalid or expired api key.",
 		},
 		{
-			name:         "valid request",
+			name:         "all bots",
 			cassetteName: "Bots",
 			config:       config,
 			params:       &ListBotsParams{},
 			options:      []ListBotsParamsOption{},
+			record:       true,
 		},
 		{
 			name:   "filter on account",
 			config: config,
+			// cassetteName: "Bots",
 			params: &ListBotsParams{},
 			options: []ListBotsParamsOption{
 				WithAccountIdForListBots(33256512),
 			},
+		},
+		{
+			name:         "enabled bots",
+			config:       config,
+			cassetteName: "Bots",
+			params:       &ListBotsParams{},
+			options: []ListBotsParamsOption{
+				WithScopeForListBots(Enabled),
+			},
+			// record: true,
+		},
+		{
+			name:         "disabled bots",
+			config:       config,
+			cassetteName: "Bots",
+			params:       &ListBotsParams{},
+			options: []ListBotsParamsOption{
+				WithScopeForListBots(Disabled),
+			},
+			// record: true,
 		},
 	}
 
@@ -97,7 +119,7 @@ func TestListBots(t *testing.T) {
 	}
 }
 
-func TestListDealsWithResponse(t *testing.T) {
+func TestGetListOfDeals(t *testing.T) {
 	type tc struct {
 		name         string
 		cassetteName string

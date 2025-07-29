@@ -181,7 +181,7 @@ const (
 // Defines values for ListBotsParamsScope.
 const (
 	Disabled ListBotsParamsScope = "disabled"
-	Enable   ListBotsParamsScope = "enable"
+	Enabled  ListBotsParamsScope = "enabled"
 )
 
 // Defines values for ListBotsParamsSortBy.

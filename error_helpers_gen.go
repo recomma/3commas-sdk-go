@@ -128,7 +128,7 @@ func main() {
 	}
 
 	// Write to output file
-	out, err := os.Create("threecommas/error_helpers.gen.go")
+	out, err := os.Create(*outputPath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error creating output file:", err)
 		os.Exit(1)
