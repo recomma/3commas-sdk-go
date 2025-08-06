@@ -1,0 +1,164 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        form:
+            from:
+                - "1754327234000"
+        url: https://api.3commas.io/public/api/ver1/bots?from=1754327234000
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 101
+        body: '{"error":"unknown_error","error_description":"Unknown error occurred#ActiveRecord::StatementInvalid"}'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 96a6882b8960e516-TXL
+            Content-Length:
+                - "101"
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 05 Aug 2025 13:09:57 GMT
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            X-Request-Id:
+                - 635f9068d6c87f70a4fdbfc4c15ad3e3
+            X-Runtime:
+                - "0.083614"
+        status: 500 Internal Server Error
+        code: 500
+        duration: 2.32870275s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        form:
+            from:
+                - "2025-08-04T17:07:14Z"
+        url: https://api.3commas.io/public/api/ver1/bots?from=2025-08-04T17%3A07%3A14Z
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 2
+        body: '[]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 96a68d5e49bfe523-TXL
+            Content-Length:
+                - "2"
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 05 Aug 2025 13:13:30 GMT
+            Etag:
+                - W/"4f53cda18c2baa0c0354bb5f9a3ecbe5"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            X-Request-Id:
+                - e20e690c8f2a7f67d963e5dd35b82688
+            X-Runtime:
+                - "0.047203"
+        status: 200 OK
+        code: 200
+        duration: 1.738124666s
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        form:
+            from:
+                - "2025-07-04T17:07:14Z"
+        url: https://api.3commas.io/public/api/ver1/bots?from=2025-07-04T17%3A07%3A14Z
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"id":16417643,"account_id":33256512,"is_enabled":true,"max_safety_orders":9,"active_safety_orders_count":9,"pairs":["USDT_DOGE"],"strategy_list":[{"options":{},"strategy":"nonstop"}],"close_strategy_list":[],"safety_strategy_list":[],"max_active_deals":1,"active_deals_count":1,"deletable?":false,"created_at":"2025-07-30T12:16:34.089Z","updated_at":"2025-08-04T17:07:13.367Z","trailing_enabled":false,"tsl_enabled":false,"deal_start_delay_seconds":null,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"disable_after_deals_count":null,"deals_counter":null,"allowed_deals_on_same_pair":null,"easy_form_supported":false,"close_deals_timeout":null,"url_secret":"eedf583625","take_profit_steps":[],"name":"Replicate","take_profit":"2.0","min_profit_percentage":"0.0","base_order_volume":"2.0","safety_order_volume":"2.0","safety_order_step_percentage":"0.21","safety_order_calculation_mode":"base","take_profit_type":"total","min_profit_type":null,"type":"Bot::SingleBot","martingale_volume_coefficient":"1.0","martingale_step_coefficient":"1.0","stop_loss_percentage":"5.0","cooldown":"0","btc_price_limit":"0.0","strategy":"long","min_volume_btc_24h":"0.0","profit_currency":"quote_currency","min_price":null,"max_price":null,"stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","account_name":"Demo Account 2080398","trailing_deviation":"0.2","finished_deals_profit_usd":"-2.66627394","finished_deals_count":"20","leverage_type":"not_specified","leverage_custom_value":null,"start_order_type":"market","active_deals_usd_profit":"-0.34547264","reinvesting_percentage":"0.0","risk_reduction_percentage":"100.0","reinvested_volume_usd":null,"min_price_percentage":null,"max_price_percentage":null},{"id":16416457,"account_id":33256512,"is_enabled":false,"max_safety_orders":3,"active_safety_orders_count":3,"pairs":["USDT_DOGE"],"strategy_list":[{"options":{},"strategy":"nonstop"}],"close_strategy_list":[],"safety_strategy_list":[],"max_active_deals":1,"active_deals_count":1,"deletable?":false,"created_at":"2025-07-29T17:14:38.489Z","updated_at":"2025-08-05T02:00:55.297Z","trailing_enabled":false,"tsl_enabled":false,"deal_start_delay_seconds":null,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"disable_after_deals_count":null,"deals_counter":null,"allowed_deals_on_same_pair":null,"easy_form_supported":false,"close_deals_timeout":null,"url_secret":"85e81b244d","take_profit_steps":[],"name":"DOGE/USDT Classic trading","take_profit":"1.0","min_profit_percentage":"0.0","base_order_volume":"20.0","safety_order_volume":"15.0","safety_order_step_percentage":"1.0","safety_order_calculation_mode":"base","take_profit_type":"total","min_profit_type":null,"type":"Bot::SingleBot","martingale_volume_coefficient":"1.7","martingale_step_coefficient":"4.0","stop_loss_percentage":"0.0","cooldown":"0","btc_price_limit":"0.0","strategy":"long","min_volume_btc_24h":"0.0","profit_currency":"quote_currency","min_price":null,"max_price":null,"stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","account_name":"Demo Account 2080398","trailing_deviation":"0.2","finished_deals_profit_usd":"1.16294188","finished_deals_count":"3","leverage_type":"not_specified","leverage_custom_value":null,"start_order_type":"limit","active_deals_usd_profit":"-4.82945655","reinvesting_percentage":"0.0","risk_reduction_percentage":"0.0","reinvested_volume_usd":null,"min_price_percentage":null,"max_price_percentage":null},{"id":16403596,"account_id":33256512,"is_enabled":false,"max_safety_orders":3,"active_safety_orders_count":3,"pairs":["USDT_ETH"],"strategy_list":[{"options":{},"strategy":"nonstop"}],"close_strategy_list":[],"safety_strategy_list":[],"max_active_deals":1,"active_deals_count":0,"deletable?":true,"created_at":"2025-07-23T02:51:11.184Z","updated_at":"2025-07-29T17:27:54.539Z","trailing_enabled":false,"tsl_enabled":false,"deal_start_delay_seconds":null,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"disable_after_deals_count":null,"deals_counter":null,"allowed_deals_on_same_pair":null,"easy_form_supported":false,"close_deals_timeout":null,"url_secret":"7d2312bacb","take_profit_steps":[],"name":"ETH/USDT Classic trading","take_profit":"1.0","min_profit_percentage":"0.0","base_order_volume":"20.0","safety_order_volume":"15.0","safety_order_step_percentage":"1.0","safety_order_calculation_mode":"base","take_profit_type":"total","min_profit_type":null,"type":"Bot::SingleBot","martingale_volume_coefficient":"1.7","martingale_step_coefficient":"4.0","stop_loss_percentage":"0.0","cooldown":"0","btc_price_limit":"0.0","strategy":"long","min_volume_btc_24h":"0.0","profit_currency":"quote_currency","min_price":null,"max_price":null,"stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","account_name":"Demo Account 2080398","trailing_deviation":"0.2","finished_deals_profit_usd":"3.19584719","finished_deals_count":"8","leverage_type":"not_specified","leverage_custom_value":null,"start_order_type":"limit","active_deals_usd_profit":"0.0","reinvesting_percentage":"0.0","risk_reduction_percentage":"0.0","reinvested_volume_usd":null,"min_price_percentage":null,"max_price_percentage":null}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 96a68dd6998ae50a-TXL
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 05 Aug 2025 13:13:49 GMT
+            Etag:
+                - W/"76060c0560cebd0054cc4a658ba978e2"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - ea7453cd91905dcb1a9890e09cf5a032
+            X-Runtime:
+                - "0.086505"
+        status: 200 OK
+        code: 200
+        duration: 1.764216291s
