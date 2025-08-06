@@ -5,10 +5,13 @@ package threecommas
 
 import (
 	"context"
+	"encoding/json"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/cassette"
@@ -47,7 +50,6 @@ func TestListBots(t *testing.T) {
 		name         string
 		cassetteName string
 		config       ClientConfig
-		params       *ListBotsParams
 		options      []ListBotsParamsOption
 		wantErr      string
 		record       bool
@@ -57,7 +59,6 @@ func TestListBots(t *testing.T) {
 		{
 			name:    "invalid auth",
 			config:  ClientConfig{APIKey: "somefakeapikey", PrivatePEM: []byte(fakeKey)},
-			params:  &ListBotsParams{},
 			options: []ListBotsParamsOption{},
 			wantErr: "API error 401: Unauthorized. Invalid or expired api key.",
 		},
@@ -65,7 +66,6 @@ func TestListBots(t *testing.T) {
 			name:         "all bots",
 			cassetteName: "Bots",
 			config:       config,
-			params:       &ListBotsParams{},
 			options:      []ListBotsParamsOption{},
 			record:       true,
 		},
@@ -73,7 +73,6 @@ func TestListBots(t *testing.T) {
 			name:   "filter on account",
 			config: config,
 			// cassetteName: "Bots",
-			params: &ListBotsParams{},
 			options: []ListBotsParamsOption{
 				WithAccountIdForListBots(33256512),
 			},
@@ -82,7 +81,6 @@ func TestListBots(t *testing.T) {
 			name:         "enabled bots",
 			config:       config,
 			cassetteName: "Bots",
-			params:       &ListBotsParams{},
 			options: []ListBotsParamsOption{
 				WithScopeForListBots(Enabled),
 			},
@@ -92,11 +90,21 @@ func TestListBots(t *testing.T) {
 			name:         "disabled bots",
 			config:       config,
 			cassetteName: "Bots",
-			params:       &ListBotsParams{},
 			options: []ListBotsParamsOption{
 				WithScopeForListBots(Disabled),
 			},
 			// record: true,
+		},
+		{
+			name:   "Bots from certain create date",
+			config: config,
+			options: func() []ListBotsParamsOption {
+				ts, _ := time.Parse(time.RFC3339, "2025-07-04T17:07:14Z")
+				return []ListBotsParamsOption{
+					WithFromForListBots(ts),
+				}
+			}(),
+			record: false,
 		},
 	}
 
@@ -184,7 +192,7 @@ func TestGetTradesForDeal(t *testing.T) {
 		name         string
 		cassetteName string
 		config       ClientConfig
-		params       DealPathId
+		dealId       DealPathId
 		wantErr      string
 		record       bool
 	}
@@ -194,14 +202,21 @@ func TestGetTradesForDeal(t *testing.T) {
 			name:         "404",
 			cassetteName: "Bots",
 			config:       config,
-			params:       1374390720784,
+			dealId:       1374390720784,
 			wantErr:      "API error 404: Not Found",
 		},
 		{
 			name:         "valid request",
 			cassetteName: "Bots",
 			config:       config,
-			params:       2362612144,
+			dealId:       2362612144,
+		},
+		{
+			name:         "lots of market orders",
+			cassetteName: "marketorders",
+			config:       config,
+			dealId:       2366275139,
+			// record:       true,
 		},
 	}
 	for _, tc := range cases {
@@ -209,7 +224,7 @@ func TestGetTradesForDeal(t *testing.T) {
 			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
 			require.NoErrorf(tt, err, "could not create client")
 
-			trades, err := client.GetTradesForDeal(context.Background(), tc.params)
+			trades, err := client.GetTradesForDeal(context.Background(), tc.dealId)
 			if tc.wantErr != "" {
 				require.EqualError(tt, err, tc.wantErr)
 				return
@@ -218,6 +233,33 @@ func TestGetTradesForDeal(t *testing.T) {
 			require.NoError(tt, err)
 			require.NotEmpty(tt, trades, "expected at least one trade, got empty list")
 		})
+	}
+}
+
+func TestGetMarketOrdersForDeal(t *testing.T) {
+	client, err := getClient(t, config, false, "marketorders")
+	require.NoErrorf(t, err, "could not create client")
+
+	trades, err := client.GetMarketOrdersForDeal(context.Background(), 2366275139)
+	require.NoError(t, err)
+	require.NotEmpty(t, trades, "expected at least one trade, got empty list")
+
+	// filtered := Filter(trades, func(o MarketOrder) bool {
+	// 	return o.StatusString == MarketOrderStatusStringFilled
+	// })
+
+	filtered := Filter(trades, MarketOrderFilterStatusString(Filled))
+	timestamp, err := time.Parse(time.RFC3339, "2025-08-04T17:07:14Z")
+	require.NoErrorf(t, err, "Could not parse date")
+	filtered = Filter(filtered, MarketOrderFilterCreatedAtAfter(timestamp))
+
+	for _, trade := range filtered {
+		tr, err := json.MarshalIndent(trade, "", "  ")
+		if err != nil {
+			log.Printf("failed to marshal trade: %v", err)
+			continue
+		}
+		t.Logf("trade: %s", tr)
 	}
 }
 

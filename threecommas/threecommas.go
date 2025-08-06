@@ -23,7 +23,7 @@ type ClientConfig struct {
 }
 
 // NewClient returns a fully-wired oapi-codegen client that
-// signs every request with RSA
+// signs every request with RSA, has a ratelimit of 100req/min
 func New3CommasClient(cfg ClientConfig, opts ...ClientOption) (*ThreeCommasClient, error) {
 	priv, err := parseRSAPrivate(cfg.PrivatePEM)
 	if err != nil {
@@ -37,6 +37,7 @@ func New3CommasClient(cfg ClientConfig, opts ...ClientOption) (*ThreeCommasClien
 	}
 
 	opts = append(opts, WithRequestEditorFn(signer))
+	opts = append(opts, WithDefaultRatelimit())
 
 	raw, err := NewClientWithResponses(cfg.BaseURL, opts...)
 	if err != nil {
@@ -98,6 +99,10 @@ type ThreeCommasClient struct {
 	*ClientWithResponses
 }
 
+func (c *ThreeCommasClient) GetMarketOrdersForDeal(ctx context.Context, dealId DealPathId) ([]MarketOrder, error) {
+	return c.GetTradesForDeal(ctx, dealId)
+}
+
 // GetTradesForDeal is a thin wrapper around GetTradesOfDealWithResponse that
 // returns the slice of MarketOrder on 200 OK, or an error otherwise.
 func (c *ThreeCommasClient) GetTradesForDeal(ctx context.Context, dealId DealPathId) ([]MarketOrder, error) {
@@ -155,6 +160,31 @@ type APIError struct {
 func (e *APIError) Error() string {
 	// You can customize this however you like.
 	return fmt.Sprintf("API error %d: %s", e.StatusCode, *e.ErrorPayload.ErrorDescription)
+}
+
+func (e *ErrorResponse) String() string {
+	var s strings.Builder
+	s.WriteString("Error: ")
+	s.WriteString(e.Error)
+	s.WriteString("\n")
+	if e.ErrorDescription != nil {
+		s.WriteString("Description: ")
+		s.WriteString(*e.ErrorDescription)
+		s.WriteString("\n")
+	}
+	if e.ErrorAttributes != nil {
+		s.WriteString("Attributes:\n")
+		for k, v := range *e.ErrorAttributes {
+			s.WriteString(" ")
+			s.WriteString(k)
+			s.WriteString(": ")
+			s.WriteString(strings.Join(v, ", "))
+			s.WriteString("\n")
+		}
+		s.WriteString("\n")
+	}
+
+	return s.String()
 }
 
 func GetErrorFromResponse(v APIErrorResponses) error {

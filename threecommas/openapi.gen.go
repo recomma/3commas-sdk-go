@@ -136,6 +136,19 @@ const (
 	BotEntityTakeProfitTypeTotal BotEntityTakeProfitType = "total"
 )
 
+// Defines values for DealStatus.
+const (
+	DealStatusBought    DealStatus = "bought"
+	DealStatusCompleted DealStatus = "completed"
+	DealStatusFailed    DealStatus = "failed"
+)
+
+// Defines values for DealTakeProfitType.
+const (
+	DealTakeProfitTypeBase  DealTakeProfitType = "base"
+	DealTakeProfitTypeTotal DealTakeProfitType = "total"
+)
+
 // Defines values for DealUpdateRequestProfitCurrency.
 const (
 	BaseCurrency  DealUpdateRequestProfitCurrency = "base_currency"
@@ -144,20 +157,42 @@ const (
 
 // Defines values for DealUpdateRequestStopLossType.
 const (
-	StopLoss              DealUpdateRequestStopLossType = "stop_loss"
-	StopLossAndDisableBot DealUpdateRequestStopLossType = "stop_loss_and_disable_bot"
+	DealUpdateRequestStopLossTypeStopLoss              DealUpdateRequestStopLossType = "stop_loss"
+	DealUpdateRequestStopLossTypeStopLossAndDisableBot DealUpdateRequestStopLossType = "stop_loss_and_disable_bot"
 )
 
 // Defines values for DealUpdateRequestTakeProfitType.
 const (
-	Base  DealUpdateRequestTakeProfitType = "base"
-	Total DealUpdateRequestTakeProfitType = "total"
+	DealUpdateRequestTakeProfitTypeBase  DealUpdateRequestTakeProfitType = "base"
+	DealUpdateRequestTakeProfitTypeTotal DealUpdateRequestTakeProfitType = "total"
 )
 
 // Defines values for MarketListItemAvailableConnectionFlows.
 const (
 	FastConnect MarketListItemAvailableConnectionFlows = "fast_connect"
 	Form        MarketListItemAvailableConnectionFlows = "form"
+)
+
+// Defines values for MarketOrderDealOrderType.
+const (
+	MarketOrderDealOrderTypeBase         MarketOrderDealOrderType = "Base"
+	MarketOrderDealOrderTypeManualSafety MarketOrderDealOrderType = "Manual Safety"
+	MarketOrderDealOrderTypeSafety       MarketOrderDealOrderType = "Safety"
+	MarketOrderDealOrderTypeStopLoss     MarketOrderDealOrderType = "Stop Loss"
+	MarketOrderDealOrderTypeTakeProfit   MarketOrderDealOrderType = "Take Profit"
+)
+
+// Defines values for MarketOrderOrderType.
+const (
+	BUY  MarketOrderOrderType = "BUY"
+	SELL MarketOrderOrderType = "SELL"
+)
+
+// Defines values for MarketOrderStatusString.
+const (
+	Active   MarketOrderStatusString = "Active"
+	Filled   MarketOrderStatusString = "Filled"
+	Inactive MarketOrderStatusString = "Inactive"
 )
 
 // Defines values for GetCurrencyRatesParamsLimitType.
@@ -205,11 +240,11 @@ const (
 
 // Defines values for ListDealsParamsScope.
 const (
-	Active    ListDealsParamsScope = "active"
-	Cancelled ListDealsParamsScope = "cancelled"
-	Completed ListDealsParamsScope = "completed"
-	Failed    ListDealsParamsScope = "failed"
-	Finished  ListDealsParamsScope = "finished"
+	ListDealsParamsScopeActive    ListDealsParamsScope = "active"
+	ListDealsParamsScopeCancelled ListDealsParamsScope = "cancelled"
+	ListDealsParamsScopeCompleted ListDealsParamsScope = "completed"
+	ListDealsParamsScopeFailed    ListDealsParamsScope = "failed"
+	ListDealsParamsScopeFinished  ListDealsParamsScope = "finished"
 )
 
 // Defines values for ListDealsParamsOrder.
@@ -233,19 +268,19 @@ type Bot struct {
 	AccountId int `json:"account_id"`
 
 	// AccountName Exchange-account name shown to the user.
-	AccountName *string `json:"account_name,omitempty"`
+	AccountName string `json:"account_name"`
 
 	// ActiveDeals List of active deals managed by this DCA Bot.
-	ActiveDeals *[]Deal `json:"active_deals,omitempty"`
+	ActiveDeals []Deal `json:"active_deals"`
 
 	// ActiveDealsBtcProfit Unrealised P/L of active deals (BTC).
-	ActiveDealsBtcProfit *string `json:"active_deals_btc_profit,omitempty"`
+	ActiveDealsBtcProfit string `json:"active_deals_btc_profit"`
 
 	// ActiveDealsCount Number of active deals.
-	ActiveDealsCount *int `json:"active_deals_count,omitempty"`
+	ActiveDealsCount int `json:"active_deals_count"`
 
 	// ActiveDealsUsdProfit Unrealised P/L of active deals (USD).
-	ActiveDealsUsdProfit *string `json:"active_deals_usd_profit,omitempty"`
+	ActiveDealsUsdProfit string `json:"active_deals_usd_profit"`
 
 	// ActiveSafetyOrdersCount Number of safety orders the bot may place concurrently.
 	ActiveSafetyOrdersCount *int `json:"active_safety_orders_count,omitempty"`
@@ -260,7 +295,7 @@ type Bot struct {
 	BaseOrderVolumeType *BotBaseOrderVolumeType `json:"base_order_volume_type,omitempty"`
 
 	// BtcFundsLockedInActiveDeals BTC currently locked in active deals.
-	BtcFundsLockedInActiveDeals *string `json:"btc_funds_locked_in_active_deals,omitempty"`
+	BtcFundsLockedInActiveDeals string `json:"btc_funds_locked_in_active_deals"`
 
 	// CloseDealsTimeout Auto-close deals after this many seconds.
 	CloseDealsTimeout *string `json:"close_deals_timeout,omitempty"`
@@ -272,31 +307,31 @@ type Bot struct {
 	Cooldown *string `json:"cooldown,omitempty"`
 
 	// CreatedAt ISO-8601 timestamp when the bot was created.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
 
 	// DealStartDelaySeconds Delay before a new deal starts (seconds).
 	DealStartDelaySeconds *int `json:"deal_start_delay_seconds,omitempty"`
 
 	// Deletable Indicates whether this bot can be deleted.
-	Deletable *bool `json:"deletable?,omitempty"`
+	Deletable bool `json:"deletable?"`
 
 	// DisableAfterDealsCount Number of deals after which the bot disables itself.
 	DisableAfterDealsCount *int `json:"disable_after_deals_count,omitempty"`
 
 	// FinishedDealsCount Total number of finished deals.
-	FinishedDealsCount *string `json:"finished_deals_count,omitempty"`
+	FinishedDealsCount string `json:"finished_deals_count"`
 
 	// FinishedDealsProfitUsd Cumulative USD profit from finished deals.
-	FinishedDealsProfitUsd *string `json:"finished_deals_profit_usd,omitempty"`
+	FinishedDealsProfitUsd string `json:"finished_deals_profit_usd"`
 
 	// FundsLockedInActiveDeals USD currently locked in active deals.
-	FundsLockedInActiveDeals *string `json:"funds_locked_in_active_deals,omitempty"`
+	FundsLockedInActiveDeals string `json:"funds_locked_in_active_deals"`
 
 	// Id Unique 3Commas ID for this DCA Bot.
 	Id int `json:"id"`
 
 	// IsEnabled Whether the bot is currently enabled.
-	IsEnabled *bool `json:"is_enabled,omitempty"`
+	IsEnabled bool `json:"is_enabled"`
 
 	// LeverageCustomValue Leverage value (exchange- and pair-dependent).
 	LeverageCustomValue *float32 `json:"leverage_custom_value,omitempty"`
@@ -347,7 +382,7 @@ type Bot struct {
 	ProfitCurrency *BotProfitCurrency `json:"profit_currency,omitempty"`
 
 	// ReinvestedVolumeUsd USD volume reinvested from profit.
-	ReinvestedVolumeUsd nullable.Nullable[float32] `json:"reinvested_volume_usd,omitempty"`
+	ReinvestedVolumeUsd nullable.Nullable[float32] `json:"reinvested_volume_usd"`
 
 	// ReinvestingPercentage Percentage of realized profit to reinvest in each new deal.
 	ReinvestingPercentage *string `json:"reinvesting_percentage,omitempty"`
@@ -415,7 +450,7 @@ type Bot struct {
 	TslEnabled *bool `json:"tsl_enabled,omitempty"`
 
 	// UpdatedAt ISO-8601 timestamp of last update.
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // BotBaseOrderVolumeType The volume type of the base order.
@@ -846,209 +881,209 @@ type CurrencyRatesWithLeverageData struct {
 // Deal A single DCA‐bot deal, with all its execution and P/L details.
 type Deal struct {
 	// AccountId Unique 3Commas ID for the exchange account used.
-	AccountId *int `json:"account_id,omitempty"`
+	AccountId int `json:"account_id"`
 
 	// AccountName The name of the exchange account, as set by the user.
-	AccountName *string `json:"account_name,omitempty"`
+	AccountName string `json:"account_name"`
 
 	// ActiveManualSafetyOrders Number of active manually‐triggered safety orders.
-	ActiveManualSafetyOrders *int `json:"active_manual_safety_orders,omitempty"`
+	ActiveManualSafetyOrders int `json:"active_manual_safety_orders"`
 
 	// ActiveSafetyOrdersCount Number of safety orders the bot may place concurrently.
-	ActiveSafetyOrdersCount *int `json:"active_safety_orders_count,omitempty"`
+	ActiveSafetyOrdersCount int `json:"active_safety_orders_count"`
 
 	// ActualProfit Realized P/L after execution.
-	ActualProfit nullable.Nullable[string] `json:"actual_profit,omitempty"`
+	ActualProfit nullable.Nullable[string] `json:"actual_profit"`
 
 	// ActualProfitPercentage Realized profit percentage.
-	ActualProfitPercentage *string `json:"actual_profit_percentage,omitempty"`
+	ActualProfitPercentage string `json:"actual_profit_percentage"`
 
 	// ActualUsdProfit Realized P/L in USD.
-	ActualUsdProfit nullable.Nullable[string] `json:"actual_usd_profit,omitempty"`
+	ActualUsdProfit nullable.Nullable[string] `json:"actual_usd_profit"`
 
 	// AddFundable Whether adding funds is allowed.
-	AddFundable *bool `json:"add_fundable,omitempty"`
+	AddFundable bool `json:"add_fundable"`
 
 	// BaseOrderAveragePrice Average price of the base order.
-	BaseOrderAveragePrice *string `json:"base_order_average_price,omitempty"`
+	BaseOrderAveragePrice string `json:"base_order_average_price"`
 
 	// BaseOrderVolume Volume of the base order.
-	BaseOrderVolume *string `json:"base_order_volume,omitempty"`
+	BaseOrderVolume string `json:"base_order_volume"`
 
 	// BaseOrderVolumeType Volume type of the base order.
-	BaseOrderVolumeType *string `json:"base_order_volume_type,omitempty"`
+	BaseOrderVolumeType string `json:"base_order_volume_type"`
 
 	// BotEvents Log of bot events for this deal.
-	BotEvents *[]struct {
+	BotEvents []struct {
 		// CreatedAt When the event occurred.
 		CreatedAt *time.Time `json:"created_at,omitempty"`
 
 		// Message Event description.
 		Message *string `json:"message,omitempty"`
-	} `json:"bot_events,omitempty"`
+	} `json:"bot_events"`
 
 	// BotId Unique 3Commas ID for the DCA Bot that opened this deal.
-	BotId *int `json:"bot_id,omitempty"`
+	BotId int `json:"bot_id"`
 
 	// BotName DCA Bot name specified by the user.
-	BotName *string `json:"bot_name,omitempty"`
+	BotName string `json:"bot_name"`
 
 	// BoughtAmount Amount of asset bought.
-	BoughtAmount *string `json:"bought_amount,omitempty"`
+	BoughtAmount string `json:"bought_amount"`
 
 	// BoughtAveragePrice Average price of the buy.
-	BoughtAveragePrice *string `json:"bought_average_price,omitempty"`
+	BoughtAveragePrice string `json:"bought_average_price"`
 
 	// BoughtVolume Quote‐currency volume spent.
-	BoughtVolume *string `json:"bought_volume,omitempty"`
+	BoughtVolume string `json:"bought_volume"`
 
 	// Cancellable Whether this deal can still be canceled.
-	Cancellable *bool `json:"cancellable?,omitempty"`
+	Cancellable bool `json:"cancellable?"`
 
 	// CloseStrategyList Custom close strategies applied.
-	CloseStrategyList *[]map[string]interface{} `json:"close_strategy_list,omitempty"`
+	CloseStrategyList []map[string]interface{} `json:"close_strategy_list"`
 
 	// ClosedAt When the Deal was closed, or `null` if still open.
-	ClosedAt nullable.Nullable[time.Time] `json:"closed_at,omitempty"`
+	ClosedAt nullable.Nullable[time.Time] `json:"closed_at"`
 
 	// CompletedManualSafetyOrdersCount Number of manually‐triggered safety orders that have completed.
-	CompletedManualSafetyOrdersCount *int `json:"completed_manual_safety_orders_count,omitempty"`
+	CompletedManualSafetyOrdersCount int `json:"completed_manual_safety_orders_count"`
 
 	// CompletedSafetyOrdersCount How many safety orders have already been filled.
-	CompletedSafetyOrdersCount *int `json:"completed_safety_orders_count,omitempty"`
+	CompletedSafetyOrdersCount int `json:"completed_safety_orders_count"`
 
 	// CreatedAt When the Deal was created (ISO 8601).
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
 
 	// CurrentActiveSafetyOrders Currently active safety orders.
-	CurrentActiveSafetyOrders *int `json:"current_active_safety_orders,omitempty"`
+	CurrentActiveSafetyOrders int `json:"current_active_safety_orders"`
 
 	// CurrentActiveSafetyOrdersCount Currently active safety orders (including manual).
-	CurrentActiveSafetyOrdersCount *int `json:"current_active_safety_orders_count,omitempty"`
+	CurrentActiveSafetyOrdersCount int `json:"current_active_safety_orders_count"`
 
 	// CurrentPrice Latest market price.
-	CurrentPrice *string `json:"current_price,omitempty"`
+	CurrentPrice string `json:"current_price"`
 
 	// DealHasError Indicates whether this Deal has encountered any errors.
-	DealHasError *bool `json:"deal_has_error,omitempty"`
+	DealHasError bool `json:"deal_has_error"`
 
 	// ErrorMessage Error message if the deal failed.
-	ErrorMessage nullable.Nullable[string] `json:"error_message,omitempty"`
+	ErrorMessage nullable.Nullable[string] `json:"error_message"`
 
 	// FinalProfit Net P/L (in profit currency).
-	FinalProfit *string `json:"final_profit,omitempty"`
+	FinalProfit string `json:"final_profit"`
 
 	// FinalProfitPercentage Net P/L percentage.
-	FinalProfitPercentage *string `json:"final_profit_percentage,omitempty"`
+	FinalProfitPercentage string `json:"final_profit_percentage"`
 
 	// Finished Whether this Deal has finished (`true`) or is still in progress (`false`).
-	Finished *bool `json:"finished?,omitempty"`
+	Finished bool `json:"finished?"`
 
 	// FromCurrency Quote currency code.
-	FromCurrency   *string `json:"from_currency,omitempty"`
-	FromCurrencyId *int    `json:"from_currency_id,omitempty"`
+	FromCurrency   string `json:"from_currency"`
+	FromCurrencyId *int   `json:"from_currency_id,omitempty"`
 
 	// Id Unique 3Commas ID for this Deal entity.
-	Id *int `json:"id,omitempty"`
+	Id int `json:"id"`
 
 	// LeverageCustomValue User‐set leverage value.
-	LeverageCustomValue nullable.Nullable[string] `json:"leverage_custom_value,omitempty"`
+	LeverageCustomValue nullable.Nullable[string] `json:"leverage_custom_value"`
 
 	// LeverageType Leverage mode (`cross`, `isolated`, or `not_specified`).
-	LeverageType *string `json:"leverage_type,omitempty"`
+	LeverageType string `json:"leverage_type"`
 
 	// LocalizedStatus Human‐readable status.
-	LocalizedStatus *string `json:"localized_status,omitempty"`
+	LocalizedStatus string `json:"localized_status"`
 
 	// MarketType Exchange market type (`spot` or `futures`).
-	MarketType *string `json:"market_type,omitempty"`
+	MarketType string `json:"market_type"`
 
 	// MartingaleStepCoefficient Martingale step multiplier.
-	MartingaleStepCoefficient *string `json:"martingale_step_coefficient,omitempty"`
+	MartingaleStepCoefficient string `json:"martingale_step_coefficient"`
 
 	// MartingaleVolumeCoefficient Martingale volume multiplier.
-	MartingaleVolumeCoefficient *string `json:"martingale_volume_coefficient,omitempty"`
+	MartingaleVolumeCoefficient string `json:"martingale_volume_coefficient"`
 
 	// MaxSafetyOrders Maximum number of safety orders allowed for this deal.
-	MaxSafetyOrders *int `json:"max_safety_orders,omitempty"`
+	MaxSafetyOrders int `json:"max_safety_orders"`
 
 	// MinProfitPercentage Minimum profit % for TP close strategy.
-	MinProfitPercentage *string `json:"min_profit_percentage,omitempty"`
+	MinProfitPercentage string `json:"min_profit_percentage"`
 
 	// MinProfitType Basis for minimum profit calculation.
-	MinProfitType nullable.Nullable[string] `json:"min_profit_type,omitempty"`
+	MinProfitType nullable.Nullable[string] `json:"min_profit_type"`
 
 	// Note Optional user note.
-	Note nullable.Nullable[string] `json:"note,omitempty"`
+	Note nullable.Nullable[string] `json:"note"`
 
 	// OrderbookPriceCurrency Currency used for orderbook quotes.
-	OrderbookPriceCurrency *string `json:"orderbook_price_currency,omitempty"`
+	OrderbookPriceCurrency string `json:"orderbook_price_currency"`
 
 	// Pair Trading pair in 3Commas format.
-	Pair *string `json:"pair,omitempty"`
+	Pair string `json:"pair"`
 
 	// PanicSellable Whether this deal can still be closed at market price.
-	PanicSellable *bool `json:"panic_sellable?,omitempty"`
+	PanicSellable bool `json:"panic_sellable?"`
 
 	// ProfitCurrency Currency for profit calculation.
-	ProfitCurrency *string `json:"profit_currency,omitempty"`
+	ProfitCurrency string `json:"profit_currency"`
 
 	// SafetyOrderStepPercentage Price deviation (%) between safety orders.
-	SafetyOrderStepPercentage *string `json:"safety_order_step_percentage,omitempty"`
+	SafetyOrderStepPercentage string `json:"safety_order_step_percentage"`
 
 	// SafetyOrderVolume Size of each safety order.
-	SafetyOrderVolume *string `json:"safety_order_volume,omitempty"`
+	SafetyOrderVolume string `json:"safety_order_volume"`
 
 	// SafetyOrderVolumeType Volume type for safety orders (e.g. `quote_currency`, `base_currency`, `percent`).
-	SafetyOrderVolumeType *string `json:"safety_order_volume_type,omitempty"`
+	SafetyOrderVolumeType string `json:"safety_order_volume_type"`
 
 	// SafetyStrategyList Custom strategies for safety orders.
-	SafetyStrategyList *[]map[string]interface{} `json:"safety_strategy_list,omitempty"`
+	SafetyStrategyList []map[string]interface{} `json:"safety_strategy_list"`
 
 	// SlToBreakevenData Breakeven config (e.g. `{ "upper_breakeven_limit": 1 }`).
-	SlToBreakevenData nullable.Nullable[map[string]interface{}] `json:"sl_to_breakeven_data,omitempty"`
+	SlToBreakevenData nullable.Nullable[map[string]interface{}] `json:"sl_to_breakeven_data"`
 
 	// SlToBreakevenEnabled Move-to-Breakeven feature enabled.
-	SlToBreakevenEnabled *bool `json:"sl_to_breakeven_enabled,omitempty"`
+	SlToBreakevenEnabled bool `json:"sl_to_breakeven_enabled"`
 
 	// SmartTradeConvertable Whether this deal can be converted to a SmartTrade.
-	SmartTradeConvertable *bool `json:"smart_trade_convertable,omitempty"`
+	SmartTradeConvertable bool `json:"smart_trade_convertable"`
 
 	// SoldAmount Amount of asset sold.
-	SoldAmount *string `json:"sold_amount,omitempty"`
+	SoldAmount string `json:"sold_amount"`
 
 	// SoldAveragePrice Average sell price.
-	SoldAveragePrice *string `json:"sold_average_price,omitempty"`
+	SoldAveragePrice string `json:"sold_average_price"`
 
 	// SoldVolume Quote‐currency volume received from sells.
-	SoldVolume *string `json:"sold_volume,omitempty"`
+	SoldVolume string `json:"sold_volume"`
 
-	// Status Deal status (e.g. `bought`, `completed`, `failed`).
-	Status *string `json:"status,omitempty"`
+	// Status Deal status
+	Status DealStatus `json:"status"`
 
 	// StopLossPercentage Stop-Loss trigger percentage.
-	StopLossPercentage *string `json:"stop_loss_percentage,omitempty"`
+	StopLossPercentage string `json:"stop_loss_percentage"`
 
 	// StopLossPrice SL trigger price.
-	StopLossPrice *string `json:"stop_loss_price,omitempty"`
+	StopLossPrice string `json:"stop_loss_price"`
 
 	// StopLossTimeoutEnabled Whether Stop-Loss timeout is enabled.
-	StopLossTimeoutEnabled *bool `json:"stop_loss_timeout_enabled,omitempty"`
+	StopLossTimeoutEnabled bool `json:"stop_loss_timeout_enabled"`
 
 	// StopLossTimeoutInSeconds Duration (s) of Stop-Loss timeout.
-	StopLossTimeoutInSeconds *int `json:"stop_loss_timeout_in_seconds,omitempty"`
+	StopLossTimeoutInSeconds int `json:"stop_loss_timeout_in_seconds"`
 
 	// StopLossType What action occurs on Stop-Loss.
-	StopLossType *string `json:"stop_loss_type,omitempty"`
+	StopLossType string `json:"stop_loss_type"`
 
 	// TakeProfit Take Profit percentage, or `null` if using steps.
-	TakeProfit nullable.Nullable[string] `json:"take_profit,omitempty"`
+	TakeProfit nullable.Nullable[string] `json:"take_profit"`
 
 	// TakeProfitPrice TP trigger price (single‐condition bots).
-	TakeProfitPrice *string `json:"take_profit_price,omitempty"`
+	TakeProfitPrice string `json:"take_profit_price"`
 
 	// TakeProfitSteps If using TP steps, the details of each step.
-	TakeProfitSteps *[]struct {
+	TakeProfitSteps []struct {
 		// AmountPercentage % of base order volume for this TP step.
 		AmountPercentage *float32 `json:"amount_percentage,omitempty"`
 
@@ -1078,30 +1113,36 @@ type Deal struct {
 
 		// TradeId 3Commas Trade entity ID.
 		TradeId *int `json:"trade_id,omitempty"`
-	} `json:"take_profit_steps,omitempty"`
+	} `json:"take_profit_steps"`
 
-	// TakeProfitType Basis for TP calculation (`base` or `total`).
-	TakeProfitType *string `json:"take_profit_type,omitempty"`
+	// TakeProfitType Basis for TP calculation
+	TakeProfitType DealTakeProfitType `json:"take_profit_type"`
 
 	// ToCurrency Base currency code.
-	ToCurrency   *string `json:"to_currency,omitempty"`
-	ToCurrencyId *int    `json:"to_currency_id,omitempty"`
+	ToCurrency   string `json:"to_currency"`
+	ToCurrencyId *int   `json:"to_currency_id,omitempty"`
 
 	// TrailingEnabled Trailing Take Profit enabled.
-	TrailingEnabled *bool `json:"trailing_enabled,omitempty"`
+	TrailingEnabled bool `json:"trailing_enabled"`
 
 	// TslEnabled Trailing Stop Loss enabled.
-	TslEnabled *bool `json:"tsl_enabled,omitempty"`
+	TslEnabled bool `json:"tsl_enabled"`
 
 	// Type The type of entity.
-	Type *string `json:"type,omitempty"`
+	Type string `json:"type"`
 
 	// UpdatedAt When the Deal was last updated (ISO 8601).
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at"`
 
 	// UsdFinalProfit Net P/L expressed in USD.
-	UsdFinalProfit *string `json:"usd_final_profit,omitempty"`
+	UsdFinalProfit string `json:"usd_final_profit"`
 }
+
+// DealStatus Deal status
+type DealStatus string
+
+// DealTakeProfitType Basis for TP calculation
+type DealTakeProfitType string
 
 // DealDataForAddingFundsResponse defines model for DealDataForAddingFundsResponse.
 type DealDataForAddingFundsResponse struct {
@@ -1410,22 +1451,31 @@ type MarketOrder struct {
 	CreatedAt   time.Time `json:"created_at"`
 
 	// DealOrderType The type of the order to be created by this trade.
-	DealOrderType string `json:"deal_order_type"`
+	DealOrderType MarketOrderDealOrderType `json:"deal_order_type"`
 
 	// OrderId Unique 3Commas Trade entity ID.
 	OrderId string `json:"order_id"`
 
 	// OrderType The side of the order to be created by this trade.
-	OrderType         string `json:"order_type"`
-	Quantity          string `json:"quantity"`
-	QuantityRemaining string `json:"quantity_remaining"`
-	Rate              string `json:"rate"`
+	OrderType         MarketOrderOrderType `json:"order_type"`
+	Quantity          string               `json:"quantity"`
+	QuantityRemaining string               `json:"quantity_remaining"`
+	Rate              string               `json:"rate"`
 
 	// StatusString 3Commas status for this Trade.
-	StatusString string    `json:"status_string"`
-	Total        string    `json:"total"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	StatusString MarketOrderStatusString `json:"status_string"`
+	Total        string                  `json:"total"`
+	UpdatedAt    time.Time               `json:"updated_at"`
 }
+
+// MarketOrderDealOrderType The type of the order to be created by this trade.
+type MarketOrderDealOrderType string
+
+// MarketOrderOrderType The side of the order to be created by this trade.
+type MarketOrderOrderType string
+
+// MarketOrderStatusString 3Commas status for this Trade.
+type MarketOrderStatusString string
 
 // Pairs Trading pair(s) in 3Commas format.
 type Pairs = []string
@@ -1599,8 +1649,8 @@ type ListBotsParams struct {
 	// Offset Skips the first N records in the results.
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 
-	// From Returns entities created after a specific timestamp (ms since epoch).
-	From *int `form:"from,omitempty" json:"from,omitempty"`
+	// From Returns entities created after a specific timestamp in RFC 3339.
+	From *time.Time `form:"from,omitempty" json:"from,omitempty"`
 
 	// Scope Filters bots by their status.
 	Scope *ListBotsParamsScope `form:"scope,omitempty" json:"scope,omitempty"`
@@ -1695,11 +1745,11 @@ type ListDealsParams struct {
 	// Offset Skips the first N records in the results.
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 
-	// From Returns entities created after a specific time.
-	From *string `form:"from,omitempty" json:"from,omitempty"`
+	// From Returns entities created after a specific timestamp in RFC 3339.
+	From *time.Time `form:"from,omitempty" json:"from,omitempty"`
 
-	// To Returns entities created before a specific time.
-	To *string `form:"to,omitempty" json:"to,omitempty"`
+	// To Returns entities created before a specific timestamp in RFC 3339.
+	To *time.Time `form:"to,omitempty" json:"to,omitempty"`
 
 	// Scope Filters deals by their status.
 	Scope *ListDealsParamsScope `form:"scope,omitempty" json:"scope,omitempty"`

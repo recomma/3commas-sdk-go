@@ -129,7 +129,7 @@ func WithOffsetForListBots(v int) ListBotsParamsOption {
 }
 
 // WithFromForListBots sets the From field on ListBotsParams.
-func WithFromForListBots(v int) ListBotsParamsOption {
+func WithFromForListBots(v time.Time) ListBotsParamsOption {
 	return func(p *ListBotsParams) {
 		p.From = &v
 	}
@@ -346,14 +346,14 @@ func WithOffsetForListDeals(v int) ListDealsParamsOption {
 }
 
 // WithFromForListDeals sets the From field on ListDealsParams.
-func WithFromForListDeals(v string) ListDealsParamsOption {
+func WithFromForListDeals(v time.Time) ListDealsParamsOption {
 	return func(p *ListDealsParams) {
 		p.From = &v
 	}
 }
 
 // WithToForListDeals sets the To field on ListDealsParams.
-func WithToForListDeals(v string) ListDealsParamsOption {
+func WithToForListDeals(v time.Time) ListDealsParamsOption {
 	return func(p *ListDealsParams) {
 		p.To = &v
 	}
