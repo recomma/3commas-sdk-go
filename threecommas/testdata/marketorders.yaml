@@ -1,0 +1,55 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/deals/2366275139/market_orders
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"order_id":"1508343999","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.171Z","updated_at":"2025-08-04T17:23:28.690Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.66790624","rate":"0.20828","average_price":"0.20848828"},{"order_id":"1508343992","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.102Z","updated_at":"2025-08-04T17:20:20.742Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.67134968","rate":"0.20871","average_price":"0.20891871"},{"order_id":"1508343983","order_type":"SELL","deal_order_type":"Take Profit","cancellable":true,"status_string":"Active","created_at":"2025-08-04T17:07:19.963Z","updated_at":"2025-08-04T18:52:55.126Z","quantity":"80.0","quantity_remaining":"80.0","total":"0.0","rate":"0.21173","average_price":"0.0"},{"order_id":"1508344022","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.588Z","updated_at":"2025-08-04T18:52:54.039Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.6432416","rate":"0.2052","average_price":"0.2054052"},{"order_id":"1508344020","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.518Z","updated_at":"2025-08-04T18:39:25.579Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.64676512","rate":"0.20564","average_price":"0.20584564"},{"order_id":"1508344018","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.450Z","updated_at":"2025-08-04T18:11:07.065Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.65028864","rate":"0.20608","average_price":"0.20628608"},{"order_id":"1508344016","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.396Z","updated_at":"2025-08-04T17:40:54.375Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.65381216","rate":"0.20652","average_price":"0.20672652"},{"order_id":"1508344012","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.341Z","updated_at":"2025-08-04T17:35:13.283Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.65733568","rate":"0.20696","average_price":"0.20716696"},{"order_id":"1508344007","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.284Z","updated_at":"2025-08-04T17:31:03.338Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.6608592","rate":"0.2074","average_price":"0.2076074"},{"order_id":"1508344004","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:20.227Z","updated_at":"2025-08-04T17:30:13.930Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.66438272","rate":"0.20784","average_price":"0.20804784"},{"order_id":"1508343496","order_type":"BUY","deal_order_type":"Base","cancellable":false,"status_string":"Filled","created_at":"2025-08-04T17:07:13.746Z","updated_at":"2025-08-04T17:07:14.815Z","quantity":"8.0","quantity_remaining":"0.0","total":"1.6732716","rate":"0.20919","average_price":"0.20915895"}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 96a169593a00e52d-TXL
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 04 Aug 2025 22:15:06 GMT
+            Etag:
+                - W/"e1ca634fb7562901079fe1f2aca93034"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - 54d4d809e00c3c6730acc85e9979cb27
+            X-Runtime:
+                - "0.066025"
+        status: 200 OK
+        code: 200
+        duration: 1.711445833s
