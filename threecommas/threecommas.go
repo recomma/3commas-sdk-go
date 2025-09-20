@@ -37,7 +37,7 @@ func New3CommasClient(cfg ClientConfig, opts ...ClientOption) (*ThreeCommasClien
 	}
 
 	opts = append(opts, WithRequestEditorFn(signer))
-	opts = append(opts, WithDefaultRatelimit())
+	opts = append(opts, WithThreeCommasRateLimits())
 
 	raw, err := NewClientWithResponses(cfg.BaseURL, opts...)
 	if err != nil {
