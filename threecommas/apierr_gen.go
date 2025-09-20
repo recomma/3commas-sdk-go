@@ -996,13 +996,13 @@ func (r *ValidateAuthenticationResponse) GetJSON504() *GatewayTimeout {
 
 type APIErrorResponses interface {
 	StatusCode() int
-	GetJSON418() *IPAutoBanned
-	GetJSON429() *RateLimitExceeded
-	GetJSON500() *InternalServerError
-	GetJSON504() *GatewayTimeout
 	GetJSON400() *BadRequest
-	GetJSON401() *Unauthorized
 	GetJSON403() *Forbidden
+	GetJSON418() *IPAutoBanned
+	GetJSON500() *InternalServerError
+	GetJSON401() *Unauthorized
 	GetJSON404() *NotFound
+	GetJSON429() *RateLimitExceeded
+	GetJSON504() *GatewayTimeout
 }
 

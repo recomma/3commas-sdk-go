@@ -190,9 +190,19 @@ const (
 
 // Defines values for MarketOrderStatusString.
 const (
-	Active   MarketOrderStatusString = "Active"
-	Filled   MarketOrderStatusString = "Filled"
-	Inactive MarketOrderStatusString = "Inactive"
+	Active    MarketOrderStatusString = "Active"
+	Cancelled MarketOrderStatusString = "Cancelled"
+	Filled    MarketOrderStatusString = "Filled"
+	Finished  MarketOrderStatusString = "Finished"
+	Inactive  MarketOrderStatusString = "Inactive"
+)
+
+// Defines values for StrategyConfigStrategy.
+const (
+	Manual      StrategyConfigStrategy = "manual"
+	Nonstop     StrategyConfigStrategy = "nonstop"
+	Rsi         StrategyConfigStrategy = "rsi"
+	TradingView StrategyConfigStrategy = "trading_view"
 )
 
 // Defines values for GetCurrencyRatesParamsLimitType.
@@ -1444,11 +1454,14 @@ type MarketListItemAvailableConnectionFlows string
 
 // MarketOrder defines model for MarketOrder.
 type MarketOrder struct {
+	// AveragePrice The weighted average price at which the asset was bought or sold during execution.
 	AveragePrice string `json:"average_price"`
 
 	// Cancellable Indicates whether this trade can be canceled.
-	Cancellable bool      `json:"cancellable"`
-	CreatedAt   time.Time `json:"created_at"`
+	Cancellable bool `json:"cancellable"`
+
+	// CreatedAt ISO 8601 datetime string of when this Trade entity was created.
+	CreatedAt time.Time `json:"created_at"`
 
 	// DealOrderType The type of the order to be created by this trade.
 	DealOrderType MarketOrderDealOrderType `json:"deal_order_type"`
@@ -1457,15 +1470,30 @@ type MarketOrder struct {
 	OrderId string `json:"order_id"`
 
 	// OrderType The side of the order to be created by this trade.
-	OrderType         MarketOrderOrderType `json:"order_type"`
-	Quantity          string               `json:"quantity"`
-	QuantityRemaining string               `json:"quantity_remaining"`
-	Rate              string               `json:"rate"`
+	OrderType MarketOrderOrderType `json:"order_type"`
+
+	// Quantity Total quantity of the asset in this order.
+	Quantity string `json:"quantity"`
+
+	// QuantityRemaining Remaining quantity of the asset left to be filled in this order.
+	QuantityRemaining string `json:"quantity_remaining"`
+
+	// Rate Price per unit of the asset in the order.
+	Rate string `json:"rate"`
 
 	// StatusString 3Commas status for this Trade.
+	// - `Active` the trade is currently open, waiting to be filled
+	// - `Filled` the trade has been fully executed
+	// - `Finished` the trade process is complete
+	// - `Cancelled` the trade was canceled before it could be fully executed
+	// - `Inactive` (undocumented but shown in Example)
 	StatusString MarketOrderStatusString `json:"status_string"`
-	Total        string                  `json:"total"`
-	UpdatedAt    time.Time               `json:"updated_at"`
+
+	// Total Total value of the order based on quantity and rate.
+	Total string `json:"total"`
+
+	// UpdatedAt ISO 8601 datetime string of when this Trade entity was created.
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // MarketOrderDealOrderType The type of the order to be created by this trade.
@@ -1475,6 +1503,11 @@ type MarketOrderDealOrderType string
 type MarketOrderOrderType string
 
 // MarketOrderStatusString 3Commas status for this Trade.
+// - `Active` the trade is currently open, waiting to be filled
+// - `Filled` the trade has been fully executed
+// - `Finished` the trade process is complete
+// - `Cancelled` the trade was canceled before it could be fully executed
+// - `Inactive` (undocumented but shown in Example)
 type MarketOrderStatusString string
 
 // Pairs Trading pair(s) in 3Commas format.
@@ -1501,13 +1534,12 @@ type StrategyConfig struct {
 	// Options Strategy-specific parameters (keys depend on the chosen strategy; see examples below).
 	Options *map[string]interface{} `json:"options,omitempty"`
 
-	// Strategy Identifier of the strategy, e.g.
-	// - "manual"
-	// - "nonstop"
-	// - "trading_view"
-	// - "rsi"
-	Strategy *string `json:"strategy,omitempty"`
+	// Strategy Identifier of the strategy
+	Strategy *StrategyConfigStrategy `json:"strategy,omitempty"`
 }
+
+// StrategyConfigStrategy Identifier of the strategy
+type StrategyConfigStrategy string
 
 // StrategyDefinition defines model for StrategyDefinition.
 type StrategyDefinition struct {
