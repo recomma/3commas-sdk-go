@@ -150,6 +150,21 @@ func (c *ThreeCommasClient) ListBots(ctx context.Context, opts ...ListBotsParams
 	return *resp.JSON200, nil
 }
 
+func (c *ThreeCommasClient) GetDealForID(ctx context.Context, dealId DealPathId) (*Deal, error) {
+	resp, err := c.GetDealWithResponse(ctx, dealId)
+	if err != nil {
+		return nil, fmt.Errorf("request failed: %w", err)
+	}
+
+	if err := GetErrorFromResponse(resp); err != nil {
+		return nil, err
+	}
+
+	deal := Deal(*resp.JSON200)
+
+	return &deal, nil
+}
+
 // APIError wraps the raw ErrorResponse plus the HTTP status code.
 type APIError struct {
 	StatusCode   int
