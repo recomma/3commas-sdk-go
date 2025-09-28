@@ -67,7 +67,7 @@ func TestListBots(t *testing.T) {
 			cassetteName: "Bots",
 			config:       config,
 			options:      []ListBotsParamsOption{},
-			record:       true,
+			record:       false,
 		},
 		{
 			name:   "filter on account",
@@ -178,7 +178,7 @@ func TestGetListOfDeals(t *testing.T) {
 			name:         "specific bot 16511317",
 			cassetteName: "Bots16511317",
 			config:       config,
-			record:       true,
+			record:       false,
 			options: []ListDealsParamsOption{
 				WithBotIdForListDeals(16511317),
 			},
