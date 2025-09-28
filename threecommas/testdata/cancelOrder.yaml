@@ -1,0 +1,162 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        form:
+            bot_id:
+                - "16506279"
+        url: https://api.3commas.io/public/api/ver1/deals?bot_id=16506279
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"from_currency_id":0,"to_currency_id":0,"id":2375636916,"type":"Deal","bot_id":16506279,"max_safety_orders":9,"deal_has_error":false,"account_id":33256512,"active_safety_orders_count":9,"created_at":"2025-09-22T13:15:22.646Z","updated_at":"2025-09-22T17:09:30.109Z","closed_at":null,"finished?":false,"current_active_safety_orders_count":0,"current_active_safety_orders":0,"completed_safety_orders_count":9,"completed_manual_safety_orders_count":0,"cancellable?":true,"panic_sellable?":true,"trailing_enabled":false,"tsl_enabled":false,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"active_manual_safety_orders":0,"pair":"USDT_DOGE","status":"bought","localized_status":"Active","take_profit":"2.0","take_profit_steps":[],"base_order_volume":"25.0","safety_order_volume":"25.0","safety_order_step_percentage":"0.21","safety_order_calculation_mode":"base","leverage_type":"not_specified","leverage_custom_value":null,"bought_amount":"1045.0","bought_volume":"251.63136999","bought_average_price":"0.240795569368421052631578947368421053","base_order_average_price":"0.24288264","sold_amount":"0.0","sold_volume":"0.0","sold_average_price":"0","take_profit_type":"total","final_profit":"-3.10744269","martingale_coefficient":"1.0","martingale_volume_coefficient":"1.0","martingale_step_coefficient":"1.0","stop_loss_percentage":"5.0","sl_to_breakeven_enabled":false,"sl_to_breakeven_data":null,"error_message":null,"profit_currency":"quote_currency","stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","from_currency":"USDT","to_currency":"DOGE","final_profit_percentage":"0","usd_final_profit":"-3.11","actual_profit":"-2.27227869","actual_usd_profit":"-2.27227869","failed_message":null,"reserved_base_coin":"251.63136999","reserved_second_coin":"1045.0","trailing_deviation":"0.2","trailing_max_price":null,"tsl_max_price":null,"strategy":"long","last_known_position_info":null,"min_profit_percentage":"0.0","min_profit_type":null,"close_strategy_list":[],"safety_strategy_list":[],"custom_safety_steps":[],"note":null,"add_fundable":true,"smart_trade_convertable":true,"bot_name":"Binance Spot account simulator USDT Long Bot","account_name":"Demo Account 2080398","market_type":"spot","current_price":"0.23886","take_profit_price":"0.24586","stop_loss_price":"0.230738508","actual_profit_percentage":"-0.8","reserved_quote_funds":"0.0","reserved_base_funds":"0.0","orderbook_price_currency":"USDT","crypto_widget":{"progressAccuracy":2,"TTPАctivated":false,"buyPrice":"0.240795569368421052631578947368421053","currentPrice":"0.23886","inverted":false,"stopLosses":[["0.230738508",false]],"LP":null,"buySteps":[],"marks":[{"type":"tp","label":"TP","price":"0.24586","position":"down"},{"type":"sl","label":"SL","price":"0.230738508","position":"down"}]}},{"from_currency_id":0,"to_currency_id":0,"id":2375612039,"type":"Deal","bot_id":16506279,"max_safety_orders":9,"deal_has_error":false,"account_id":33256512,"active_safety_orders_count":9,"created_at":"2025-09-22T10:02:26.136Z","updated_at":"2025-09-22T13:15:19.138Z","closed_at":"2025-09-22T13:15:19.130Z","finished?":true,"current_active_safety_orders_count":0,"current_active_safety_orders":0,"completed_safety_orders_count":2,"completed_manual_safety_orders_count":0,"cancellable?":false,"panic_sellable?":false,"trailing_enabled":false,"tsl_enabled":false,"stop_loss_timeout_enabled":false,"stop_loss_timeout_in_seconds":0,"active_manual_safety_orders":0,"pair":"USDT_DOGE","status":"completed","localized_status":"Completed","take_profit":"2.0","take_profit_steps":[],"base_order_volume":"25.0","safety_order_volume":"25.0","safety_order_step_percentage":"0.21","safety_order_calculation_mode":"base","leverage_type":"not_specified","leverage_custom_value":null,"bought_amount":"318.0","bought_volume":"75.5633879","bought_average_price":"0.237620716666666666666666666666666667","base_order_average_price":"0.23796773","sold_amount":"318.0","sold_volume":"77.07600684","sold_average_price":"0.24237738","take_profit_type":"total","final_profit":"1.51261894","martingale_coefficient":"1.0","martingale_volume_coefficient":"1.0","martingale_step_coefficient":"1.0","stop_loss_percentage":"5.0","sl_to_breakeven_enabled":false,"sl_to_breakeven_data":null,"error_message":null,"profit_currency":"quote_currency","stop_loss_type":"stop_loss","safety_order_volume_type":"quote_currency","base_order_volume_type":"quote_currency","from_currency":"USDT","to_currency":"DOGE","final_profit_percentage":"2.0","usd_final_profit":"1.51","actual_profit":"1.51261894","actual_usd_profit":"1.51261894","failed_message":null,"reserved_base_coin":"-1.51261894","reserved_second_coin":"0.0","trailing_deviation":"0.2","trailing_max_price":null,"tsl_max_price":null,"strategy":"long","last_known_position_info":null,"min_profit_percentage":"0.0","min_profit_type":null,"close_strategy_list":[],"safety_strategy_list":[],"custom_safety_steps":[],"note":null,"add_fundable":false,"smart_trade_convertable":false,"bot_name":"Binance Spot account simulator USDT Long Bot","account_name":"Demo Account 2080398","market_type":"spot","current_price":"0.0","take_profit_price":"0","stop_loss_price":null,"actual_profit_percentage":"0","reserved_quote_funds":"0.0","reserved_base_funds":"0.0","orderbook_price_currency":"USDT","crypto_widget":null}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 983a7950fe898919-SOF
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 23 Sep 2025 13:43:56 GMT
+            Etag:
+                - W/"9c06294d5f694eba781b7504caec33a7"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - 69445aa0b51c57fb723d931301f69c8f
+            X-Runtime:
+                - "0.154664"
+        status: 200 OK
+        code: 200
+        duration: 7.256182167s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/deals/2375636916/market_orders
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"order_id":"1570238520","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.590Z","updated_at":"2025-09-22T17:09:29.888Z","quantity":"105.0","quantity_remaining":"0.0","total":"25.04547045","rate":"0.23829","average_price":"0.23852829"},{"order_id":"1570238518","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.548Z","updated_at":"2025-09-22T15:34:50.972Z","quantity":"105.0","quantity_remaining":"0.0","total":"25.099074","rate":"0.2388","average_price":"0.2390388"},{"order_id":"1570238514","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.506Z","updated_at":"2025-09-22T15:17:02.847Z","quantity":"105.0","quantity_remaining":"0.0","total":"25.15267755","rate":"0.23931","average_price":"0.23954931"},{"order_id":"1570238513","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.463Z","updated_at":"2025-09-22T13:42:11.146Z","quantity":"105.0","quantity_remaining":"0.0","total":"25.2062811","rate":"0.23982","average_price":"0.24005982"},{"order_id":"1570238511","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.419Z","updated_at":"2025-09-22T13:39:36.850Z","quantity":"105.0","quantity_remaining":"0.0","total":"25.25988465","rate":"0.24033","average_price":"0.24057033"},{"order_id":"1570238510","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.379Z","updated_at":"2025-09-22T13:30:43.517Z","quantity":"104.0","quantity_remaining":"0.0","total":"25.07240736","rate":"0.24084","average_price":"0.24108084"},{"order_id":"1570238508","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.330Z","updated_at":"2025-09-22T13:27:01.496Z","quantity":"104.0","quantity_remaining":"0.0","total":"25.1255004","rate":"0.24135","average_price":"0.24159135"},{"order_id":"1570238506","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.287Z","updated_at":"2025-09-22T13:19:06.154Z","quantity":"104.0","quantity_remaining":"0.0","total":"25.17859344","rate":"0.24186","average_price":"0.24210186"},{"order_id":"1570238502","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:23.245Z","updated_at":"2025-09-22T13:16:20.133Z","quantity":"104.0","quantity_remaining":"0.0","total":"25.23168648","rate":"0.24237","average_price":"0.24261237"},{"order_id":"1570238496","order_type":"SELL","deal_order_type":"Take Profit","cancellable":true,"status_string":"Active","created_at":"2025-09-22T13:15:23.159Z","updated_at":"2025-09-22T17:09:31.169Z","quantity":"1045.0","quantity_remaining":"1045.0","total":"0.0","rate":"0.24586","average_price":"0.0"},{"order_id":"1570238489","order_type":"BUY","deal_order_type":"Base","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T13:15:22.693Z","updated_at":"2025-09-22T13:15:22.982Z","quantity":"104.0","quantity_remaining":"0.0","total":"25.25979456","rate":"0.24258","average_price":"0.24288264"}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 983a79536cdb8919-SOF
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 23 Sep 2025 13:43:56 GMT
+            Etag:
+                - W/"dc7475520ac6ff1a0c344d8a4d7726c8"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - c2a9a9df019eda343a9fb7dcdeafca42
+            X-Runtime:
+                - "0.069848"
+        status: 200 OK
+        code: 200
+        duration: 360.540125ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/deals/2375612039/market_orders
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"order_id":"1570086680","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T10:02:26.804Z","updated_at":"2025-09-22T10:03:44.077Z","quantity":"106.0","quantity_remaining":"0.0","total":"25.14287776","rate":"0.23696","average_price":"0.23719696"},{"order_id":"1570086692","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:27.181Z","updated_at":"2025-09-22T13:15:18.610Z","quantity":"108.0","quantity_remaining":"108.0","total":"0.0","rate":"0.23347","average_price":"0.0"},{"order_id":"1570086691","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:27.114Z","updated_at":"2025-09-22T13:15:18.642Z","quantity":"107.0","quantity_remaining":"107.0","total":"0.0","rate":"0.23396","average_price":"0.0"},{"order_id":"1570086690","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:27.069Z","updated_at":"2025-09-22T13:15:18.647Z","quantity":"107.0","quantity_remaining":"107.0","total":"0.0","rate":"0.23446","average_price":"0.0"},{"order_id":"1570086688","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:26.994Z","updated_at":"2025-09-22T13:15:18.602Z","quantity":"107.0","quantity_remaining":"107.0","total":"0.0","rate":"0.23496","average_price":"0.0"},{"order_id":"1570086685","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:26.950Z","updated_at":"2025-09-22T13:15:18.610Z","quantity":"107.0","quantity_remaining":"107.0","total":"0.0","rate":"0.23546","average_price":"0.0"},{"order_id":"1570086684","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:26.907Z","updated_at":"2025-09-22T13:15:18.623Z","quantity":"106.0","quantity_remaining":"106.0","total":"0.0","rate":"0.23596","average_price":"0.0"},{"order_id":"1570086681","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Cancelled","created_at":"2025-09-22T10:02:26.863Z","updated_at":"2025-09-22T13:15:18.606Z","quantity":"106.0","quantity_remaining":"106.0","total":"0.0","rate":"0.23646","average_price":"0.0"},{"order_id":"1570086677","order_type":"BUY","deal_order_type":"Safety","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T10:02:26.760Z","updated_at":"2025-09-22T10:03:05.276Z","quantity":"106.0","quantity_remaining":"0.0","total":"25.19593076","rate":"0.23746","average_price":"0.23769746"},{"order_id":"1570086676","order_type":"SELL","deal_order_type":"Take Profit","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T10:02:26.676Z","updated_at":"2025-09-22T13:15:17.902Z","quantity":"318.0","quantity_remaining":"0.0","total":"77.07600684","rate":"0.24262","average_price":"0.24237738"},{"order_id":"1570086657","order_type":"BUY","deal_order_type":"Base","cancellable":false,"status_string":"Filled","created_at":"2025-09-22T10:02:26.192Z","updated_at":"2025-09-22T10:02:26.499Z","quantity":"106.0","quantity_remaining":"0.0","total":"25.22457938","rate":"0.23773","average_price":"0.23796773"}]'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 983a7955cac98919-SOF
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 23 Sep 2025 13:43:57 GMT
+            Etag:
+                - W/"88939d2d1507dae5dec16473d4e4427c"
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            Vary:
+                - Accept-Encoding
+            X-Request-Id:
+                - a0c75bfe9ea718e362dccdb0d2f2a82e
+            X-Runtime:
+                - "0.276205"
+        status: 200 OK
+        code: 200
+        duration: 375.963167ms
