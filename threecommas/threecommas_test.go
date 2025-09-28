@@ -127,6 +127,27 @@ func TestListBots(t *testing.T) {
 	}
 }
 
+func TestCancelOrder(t *testing.T) {
+	client, err := getClient(t, config, true, "cancelOrder")
+	require.NoErrorf(t, err, "could not create client")
+
+	deals, err := client.GetListOfDeals(context.Background(), WithBotIdForListDeals(16506279))
+	if err != nil {
+		t.Fatalf("Could not list deals: %s", err)
+	}
+
+	require.NoError(t, err)
+
+	for _, d := range deals {
+		orders, err := client.GetMarketOrdersForDeal(context.Background(), DealPathId(d.Id))
+		require.NoError(t, err)
+
+		for _, o := range orders {
+			log.Printf("order: %v", o)
+		}
+	}
+}
+
 func TestGetListOfDeals(t *testing.T) {
 	type tc struct {
 		name         string
@@ -151,6 +172,15 @@ func TestGetListOfDeals(t *testing.T) {
 			config:       config,
 			options: []ListDealsParamsOption{
 				WithBotIdForListDeals(16403596),
+			},
+		},
+		{
+			name:         "specific bot 16511317",
+			cassetteName: "Bots16511317",
+			config:       config,
+			record:       true,
+			options: []ListDealsParamsOption{
+				WithBotIdForListDeals(16511317),
 			},
 		},
 	}
