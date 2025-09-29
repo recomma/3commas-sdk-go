@@ -2,6 +2,7 @@ package threecommas
 
 import (
 	"strings"
+	"time"
 
 	"github.com/terwey/3commas-sdk-go/threecommas/eventparser"
 )
@@ -17,6 +18,8 @@ const (
 )
 
 type BotEvent struct {
+	CreatedAt *time.Time
+
 	Action BotEventAction
 
 	// DOGE
@@ -73,6 +76,7 @@ func (d *Deal) Events() []BotEvent {
 		}
 
 		events = append(events, BotEvent{
+			CreatedAt:        raw.CreatedAt,
 			Action:           BotEventAction(parsed.Action),
 			Coin:             parsed.Coin,
 			Type:             MarketOrderOrderType(parsed.Side),
