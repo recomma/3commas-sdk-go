@@ -1,6 +1,8 @@
 package threecommas
 
 import (
+	"fmt"
+	"hash/crc32"
 	"strings"
 	"time"
 
@@ -54,6 +56,27 @@ type BotEvent struct {
 
 	// Averaging order (8 out of 9) executed. Price: market Size: 25.0654404 USDT (110.0 DOGE)
 	Text string
+}
+
+// Fingerprint can be used to identify the same BotEvent across different states
+func (event *BotEvent) Fingerprint() string {
+	return fmt.Sprintf(
+		"%s|%d|%d|%s|%s|%.8f|%.8f|%t",
+		event.OrderType,
+		event.OrderPosition,
+		event.OrderSize,
+		strings.ToUpper(event.Coin),
+		strings.ToUpper(event.QuoteCurrency),
+		event.Size,  // base size
+		event.Price, // limit price (0 for market)
+		event.IsMarket,
+	)
+}
+
+// FingerprintAsID is an uint32 that can be used to identify the same BotEvent across different states
+// Could be seen as a replacement for a MarketOrder ID, however they share no relation
+func (event *BotEvent) FingerprintAsID() uint32 {
+	return crc32.ChecksumIEEE([]byte(event.Fingerprint()))
 }
 
 func (d *Deal) Events() []BotEvent {

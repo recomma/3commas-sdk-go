@@ -9,13 +9,13 @@ import (
 )
 
 var (
-	progressRe  = regexp.MustCompile(`\((\d+)\s+out of\s+(\d+)\)`)
-	priceRe     = regexp.MustCompile(`Price:\s*(market|[\d.]+)(?:\s+([A-Za-z]{2,}))?`)
-	sizeRe      = regexp.MustCompile(`Size:\s*([\d.]+)\s*([A-Za-z]{2,})`)
-	baseSizeRe  = regexp.MustCompile(`\((?:[A-Za-z]+\s+)?([\d.]+)\s*([A-Za-z]{2,})\)`)
-	profitRe    = regexp.MustCompile(`Profit:\s*([+-]?\d+(?:\.\d+)?)\s*([A-Za-z]{2,})`)
-	profitUSDRe = regexp.MustCompile(`\(([+-]?\d+(?:\.\d+)?)\s*\$\)`)
-	profitPctRe = regexp.MustCompile(`\(([+-]?\d+(?:\.\d+)?)%\s*`) // matches “(2.0% …”
+	progressRe       = regexp.MustCompile(`\((\d+)\s+out of\s+(\d+)\)`)
+	priceRe          = regexp.MustCompile(`Price:\s*(market|[\d.]+)(?:\s+([A-Za-z]{2,}))?`)
+	sizeRe           = regexp.MustCompile(`Size:\s*([\d.]+)\s*([A-Za-z]{2,})`)
+	baseSizeRe       = regexp.MustCompile(`\((?:[A-Za-z]+\s+)?([\d.]+)\s*([A-Za-z]{2,})\)`)
+	profitRe         = regexp.MustCompile(`Profit:\s*([+-]?\d+(?:\.\d+)?)\s*([A-Za-z]{2,})`)
+	profitUSDRe      = regexp.MustCompile(`\(([+-]?\d+(?:\.\d+)?)\s*\$\)`)
+	profitPctRe      = regexp.MustCompile(`\(([+-]?\d+(?:\.\d+)?)%\s*`) // matches “(2.0% …”
 	amountCurrencyRe = regexp.MustCompile(`([-+]?\d+(?:\.\d+)?)\s*([A-Za-z]{2,})`)
 )
 
@@ -37,7 +37,6 @@ const (
 	ActionExecute   Action = "Execute"
 	ActionCancel    Action = "Cancel"
 	ActionCancelled Action = "Cancelled"
-	ActionModify    Action = "Modify"
 	ActionFinished  Action = "Finished"
 	ActionCompleted Action = "Completed"
 )
@@ -177,7 +176,7 @@ func Parse(message string, ctx Context) (Event, error) {
 }
 
 func parseProfit(input string) (amount float64, currency string, usd float64, pct float64) {
-    lower := strings.ToLower(input)
+	lower := strings.ToLower(input)
 	if match := profitRe.FindStringSubmatch(input); len(match) == 3 {
 		if val, err := strconv.ParseFloat(match[1], 64); err == nil {
 			amount = val
@@ -185,17 +184,17 @@ func parseProfit(input string) (amount float64, currency string, usd float64, pc
 		}
 	}
 
-    if match := profitUSDRe.FindStringSubmatch(input); len(match) == 2 {
-        if val, err := strconv.ParseFloat(match[1], 64); err == nil {
-            usd = val
-        }
-    }
+	if match := profitUSDRe.FindStringSubmatch(input); len(match) == 2 {
+		if val, err := strconv.ParseFloat(match[1], 64); err == nil {
+			usd = val
+		}
+	}
 
-    if match := profitPctRe.FindStringSubmatch(input); len(match) == 2 {
-        if val, err := strconv.ParseFloat(match[1], 64); err == nil {
-            pct = val
-        }
-    }
+	if match := profitPctRe.FindStringSubmatch(input); len(match) == 2 {
+		if val, err := strconv.ParseFloat(match[1], 64); err == nil {
+			pct = val
+		}
+	}
 
 	if amount == 0 && currency == "" && (strings.Contains(lower, "stop loss") || strings.Contains(lower, "stoploss")) && !strings.Contains(lower, "price:") {
 		if matches := amountCurrencyRe.FindAllStringSubmatch(input, -1); len(matches) > 0 {
@@ -203,18 +202,18 @@ func parseProfit(input string) (amount float64, currency string, usd float64, pc
 				if len(m) != 3 {
 					continue
 				}
-                val, err := strconv.ParseFloat(m[1], 64)
-                if err != nil {
-                    continue
-                }
-                amount = val
-                currency = m[2]
-                break
-            }
-        }
-    }
+				val, err := strconv.ParseFloat(m[1], 64)
+				if err != nil {
+					continue
+				}
+				amount = val
+				currency = m[2]
+				break
+			}
+		}
+	}
 
-    return amount, currency, usd, pct
+	return amount, currency, usd, pct
 }
 
 func normalize(input string) string {
@@ -258,8 +257,6 @@ func classifyAction(clause string) (Action, string) {
 		return ActionExecute, strings.TrimSpace(clause[:len(clause)-len(" executed")])
 	case strings.HasSuffix(lower, " cancelled"):
 		return ActionCancelled, strings.TrimSpace(clause[:len(clause)-len(" cancelled")])
-	case strings.HasPrefix(lower, "modified "):
-		return ActionModify, strings.TrimSpace(clause[len("Modified "):])
 	default:
 		return ActionUnknown, strings.TrimSpace(clause)
 	}
@@ -341,7 +338,7 @@ func parseSize(input string) (quoteVol float64, quoteCur string, baseVol float64
 
 func inferStatus(action Action) Status {
 	switch action {
-	case ActionPlace, ActionModify:
+	case ActionPlace:
 		return StatusActive
 	case ActionExecute:
 		return StatusFilled
