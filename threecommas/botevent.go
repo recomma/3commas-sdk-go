@@ -3,6 +3,7 @@ package threecommas
 import (
 	"fmt"
 	"hash/crc32"
+	"sort"
 	"strings"
 	"time"
 
@@ -61,15 +62,12 @@ type BotEvent struct {
 // Fingerprint can be used to identify the same BotEvent across different states
 func (event *BotEvent) Fingerprint() string {
 	return fmt.Sprintf(
-		"%s|%d|%d|%s|%s|%.8f|%.8f|%t",
+		"%s|%d|%d|%s|%s",
 		event.OrderType,
 		event.OrderPosition,
 		event.OrderSize,
 		strings.ToUpper(event.Coin),
 		strings.ToUpper(event.QuoteCurrency),
-		event.Size,  // base size
-		event.Price, // limit price (0 for market)
-		event.IsMarket,
 	)
 }
 
@@ -79,6 +77,7 @@ func (event *BotEvent) FingerprintAsID() uint32 {
 	return crc32.ChecksumIEEE([]byte(event.Fingerprint()))
 }
 
+// Events returns the parsed BotEvents sorted on CreatedAt
 func (d *Deal) Events() []BotEvent {
 	ctx := eventparser.Context{
 		Strategy:      DealStrategy(d),
@@ -119,6 +118,13 @@ func (d *Deal) Events() []BotEvent {
 			Text:             parsed.Text,
 		})
 	}
+
+	sort.Slice(events, func(i, j int) bool {
+		if events[i].CreatedAt == nil {
+			return false
+		}
+		return events[i].CreatedAt.Before(*events[j].CreatedAt)
+	})
 
 	return events
 }
