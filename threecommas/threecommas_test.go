@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"net/url"
 	"path/filepath"
 	"strings"
 	"testing"
