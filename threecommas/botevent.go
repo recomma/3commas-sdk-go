@@ -25,27 +25,25 @@ type BotEvent struct {
 
 	Action BotEventAction
 
-	// DOGE
-	Coin string
+	Coin string // DOGE
 
-	// BUY
-	Type MarketOrderOrderType
+	Type MarketOrderOrderType // BUY
 
-	// Active
-	Status MarketOrderStatusString
+	Status MarketOrderStatusString // Active
 
-	// 25.0654404
-	Price float64
-	// 110.0
-	Size float64
+	// Price is the cost set for the order
+	Price float64 // 25.0654404
+
+	// Size is the size of COIN to order
+	Size float64 // 110.0
 
 	// MarketOrderDealOrderTypeSafety Safety
 	OrderType MarketOrderDealOrderType
 
-	// 9
-	OrderSize int
-	// 8
-	OrderPosition int
+	// OrderSize of the group of orders send, e.g. 9 orders
+	OrderSize int // 9
+	// OrderPosition of the group of orders, e.g. 8 out of 9
+	OrderPosition int // 8
 
 	QuoteVolume      float64
 	QuoteCurrency    string
@@ -55,7 +53,7 @@ type BotEvent struct {
 	ProfitUSD        float64
 	ProfitPercentage float64
 
-	// Averaging order (8 out of 9) executed. Price: market Size: 25.0654404 USDT (110.0 DOGE)
+	// Example: Averaging order (8 out of 9) executed. Price: market Size: 25.0654404 USDT (110.0 DOGE)
 	Text string
 }
 
