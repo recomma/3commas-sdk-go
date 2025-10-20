@@ -21,7 +21,7 @@ const (
 )
 
 type BotEvent struct {
-	CreatedAt *time.Time
+	CreatedAt time.Time
 
 	Action BotEventAction
 
@@ -96,7 +96,7 @@ func (d *Deal) Events() []BotEvent {
 		}
 
 		events = append(events, BotEvent{
-			CreatedAt:        raw.CreatedAt,
+			CreatedAt:        *raw.CreatedAt,
 			Action:           BotEventAction(parsed.Action),
 			Coin:             parsed.Coin,
 			Type:             MarketOrderOrderType(parsed.Side),
@@ -118,10 +118,7 @@ func (d *Deal) Events() []BotEvent {
 	}
 
 	sort.Slice(events, func(i, j int) bool {
-		if events[i].CreatedAt == nil {
-			return false
-		}
-		return events[i].CreatedAt.Before(*events[j].CreatedAt)
+		return events[i].CreatedAt.Before(events[j].CreatedAt)
 	})
 
 	return events

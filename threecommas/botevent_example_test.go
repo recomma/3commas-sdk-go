@@ -10,6 +10,8 @@ import (
 func ExampleDeal_Events() {
 	msg := func(s string) *string { return &s }
 
+	now := time.Now()
+
 	deal := Deal{
 		Status:       DealStatusBought,
 		ToCurrency:   "DOGE",
@@ -18,9 +20,9 @@ func ExampleDeal_Events() {
 			CreatedAt *time.Time `json:"created_at,omitempty"`
 			Message   *string    `json:"message,omitempty"`
 		}{
-			{Message: msg("Placing base order. Price: market Size: 25.0 USDT (100.0 DOGE)")},
-			{Message: msg("Base order executed. Price: 0.25 USDT. Size: 25.0 USDT (100.0 DOGE)")},
-			{Message: msg("Placing TakeProfit trade. Price: 0.27 USDT Size: 27.0 USDT (100.0 DOGE), the price should rise for 8% to close the trade")},
+			{CreatedAt: &now, Message: msg("Placing base order. Price: market Size: 25.0 USDT (100.0 DOGE)")},
+			{CreatedAt: &now, Message: msg("Base order executed. Price: 0.25 USDT. Size: 25.0 USDT (100.0 DOGE)")},
+			{CreatedAt: &now, Message: msg("Placing TakeProfit trade. Price: 0.27 USDT Size: 27.0 USDT (100.0 DOGE), the price should rise for 8% to close the trade")},
 		},
 	}
 
