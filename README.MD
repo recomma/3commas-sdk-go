@@ -107,4 +107,4 @@ Pull requests are welcome! Contributions that improve test coverage, fix bugs, o
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache 2.0](LICENSE).
