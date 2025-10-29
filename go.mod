@@ -1,4 +1,4 @@
-module github.com/terwey/3commas-sdk-go
+module github.com/recomma/3commas-sdk-go
 
 go 1.24.3
 
