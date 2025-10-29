@@ -7,7 +7,7 @@ This is a **community-maintained Go SDK** for the [3Commas API](https://develope
 ## Installation
 
 ```bash
-go get github.com/terwey/3commas-sdk-go/threecommas
+go get github.com/recomma/3commas-sdk-go/threecommas
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/terwey/3commas-sdk-go/threecommas"
+	"github.com/recomma/3commas-sdk-go/threecommas"
 )
 
 func main() {

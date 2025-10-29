@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/terwey/3commas-sdk-go/threecommas/eventparser"
+	"github.com/recomma/3commas-sdk-go/threecommas/eventparser"
 )
 
 type BotEventAction string

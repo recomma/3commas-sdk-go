@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/recomma/3commas-sdk-go/threecommas/eventparser"
 	"github.com/stretchr/testify/require"
-	"github.com/terwey/3commas-sdk-go/threecommas/eventparser"
 )
 
 func TestGetDeal(t *testing.T) {
