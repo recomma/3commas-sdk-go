@@ -173,8 +173,10 @@ type APIError struct {
 
 // Error implements the error interface.
 func (e *APIError) Error() string {
-	// You can customize this however you like.
-	return fmt.Sprintf("API error %d: %s", e.StatusCode, *e.ErrorPayload.ErrorDescription)
+	if e.ErrorPayload.ErrorDescription != nil {
+		return fmt.Sprintf("API error %d: %s", e.StatusCode, *e.ErrorPayload.ErrorDescription)
+	}
+	return fmt.Sprintf("API error %d: %s", e.StatusCode, e.ErrorPayload.Error)
 }
 
 func (e *ErrorResponse) String() string {
