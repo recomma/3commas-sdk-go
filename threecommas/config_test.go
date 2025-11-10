@@ -1,3 +1,8 @@
 package threecommas
 
-var config = ClientConfig{APIKey: "somefakeapikey", PrivatePEM: []byte(fakeKey)}
+func defaultTestOptions() []ThreeCommasClientOption {
+	return []ThreeCommasClientOption{
+		WithAPIKey("somefakeapikey"),
+		WithPrivatePEM([]byte(fakeKey)),
+	}
+}
