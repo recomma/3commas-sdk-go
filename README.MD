@@ -27,30 +27,69 @@ import (
 func main() {
 	privateKey, _ := os.ReadFile("private.pem")
 
-	client, err := threecommas.New3CommasClient(threecommas.ClientConfig{
-		APIKey:     "your-api-key",
-		PrivatePEM: privateKey,
-	})
+	client, err := threecommas.New3CommasClient(
+		threecommas.WithAPIKey("your-api-key"),
+		threecommas.WithPrivatePEM(privateKey),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-    // List all bots for a specific account, limit the results, and sort by profit
-    bots, err := client.ListBots(
-        context.Background(),
-        threecommas.WithAccountIdForListBots(12345678),
-        threecommas.WithLimitForListBots(50),
-        threecommas.WithSortByForListBots(threecommas.ListBotsParamsSortByProfit),
-    )
-    if err != nil {
-        log.Fatalf("failed to list bots: %v", err)
-    }
+	// List all bots for a specific account, limit the results, and sort by profit
+	bots, err := client.ListBots(
+		context.Background(),
+		threecommas.WithAccountIdForListBots(12345678),
+		threecommas.WithLimitForListBots(50),
+		threecommas.WithSortByForListBots(threecommas.ListBotsParamsSortByProfit),
+	)
+	if err != nil {
+		log.Fatalf("failed to list bots: %v", err)
+	}
 
-    for _, bot := range bots {
-        fmt.Printf("Bot ID: %d, Name: %s, Profit: %s\n", bot.Id, *bot.Name, bot.ActiveDealsUsdProfit)
-    }
+	for _, bot := range bots {
+		fmt.Printf("Bot ID: %d, Name: %s, Profit: %s\n", bot.Id, *bot.Name, bot.ActiveDealsUsdProfit)
+	}
 }
 ```
+
+## Configuration
+
+The client uses functional options for configuration:
+
+```go
+client, err := threecommas.New3CommasClient(
+	threecommas.WithAPIKey("your-api-key"),
+	threecommas.WithPrivatePEM(privateKeyBytes),
+	threecommas.WithPlanTier(threecommas.PlanPro),              // Optional: defaults to PlanExpert
+	threecommas.WithThreeCommasBaseURL("https://custom-url"),   // Optional: defaults to official API
+)
+```
+
+## Rate Limiting
+
+The SDK includes automatic rate limiting based on your 3Commas subscription tier:
+
+| Tier | Rate Limit | Access |
+|------|-----------|--------|
+| **Starter** | 5 requests/minute | Read-only |
+| **Pro** | 50 requests/minute | Read-only |
+| **Expert** | 120 requests/minute | Read/Write |
+
+Configure your tier using the `WithPlanTier()` option:
+
+```go
+client, err := threecommas.New3CommasClient(
+	threecommas.WithAPIKey("your-api-key"),
+	threecommas.WithPrivatePEM(privateKey),
+	threecommas.WithPlanTier(threecommas.PlanPro),  // Set your subscription tier
+)
+```
+
+If not specified, the SDK defaults to `PlanExpert` (120 req/min). The rate limiter:
+- Proactively prevents 429 (rate limit) errors using token bucket algorithm
+- Automatically handles 429 responses with backoff
+- Respects `Retry-After` headers from the server
+- Protects against IP auto-ban (418 responses) with 10-minute cooldown
 
 ## Authentication
 
@@ -89,8 +128,11 @@ if err := threecommas.GetErrorFromResponse(resp); err != nil {
 
 * Full access to 3Commas REST API via typed methods
 * Built-in RSA request signing
+* Configurable rate limiting based on subscription tier (Starter/Pro/Expert)
+* Automatic 429 handling with backoff and retry
 * Proper error parsing with descriptive messages
 * Support for typed request/response structs
+* Functional options pattern for clean, flexible configuration
 * VCR-based integration tests using `go-vcr`
 
 ## Testing
