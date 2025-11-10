@@ -108,8 +108,9 @@ func TestListBots(t *testing.T) {
 		},
 		{
 			// Error method: runtime error: invalid memory address or nil pointer dereference) Error: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.
-			name:   "Subscription not active",
-			config: config,
+			name:    "Subscription not active",
+			config:  config,
+			wantErr: "API error 429: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.",
 		},
 	}
 
