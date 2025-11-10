@@ -1,0 +1,52 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.3commas.io
+        url: https://api.3commas.io/public/api/ver1/bots
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 143
+        body: '{"error":"The request type ''read'' is not available with your current subscription plan. Please upgrade your plan to use this type of request."}'
+        headers:
+            Access-Control-Allow-Credentials:
+                - "true"
+            Access-Control-Allow-Headers:
+                - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Signature,Apikey,Forced-Mode
+            Access-Control-Allow-Methods:
+                - GET, PUT, POST, DELETE, PATCH, OPTIONS
+            Access-Control-Allow-Origin:
+                - '*'
+            Access-Control-Max-Age:
+                - "1728000"
+            Cache-Control:
+                - no-cache
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 99c6726f8c2ae567-TXL
+            Content-Length:
+                - "143"
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 10 Nov 2025 15:05:15 GMT
+            Server:
+                - cloudflare
+            Strict-Transport-Security:
+                - max-age=0
+            X-Request-Id:
+                - fe6fc5de037a1adbb7a9d6eedb512996
+            X-Runtime:
+                - "0.125455"
+        status: 429 Too Many Requests
+        code: 429
+        duration: 267.506041ms
