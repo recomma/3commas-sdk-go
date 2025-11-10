@@ -14,7 +14,7 @@ import (
 func TestGetDeal(t *testing.T) {
 	type tc struct {
 		cassetteName string
-		config       ClientConfig
+		clientOpts   []ThreeCommasClientOption
 		dealId       DealPathId
 		wantErr      string
 		record       bool
@@ -24,40 +24,40 @@ func TestGetDeal(t *testing.T) {
 	cases := []tc{
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       2376446537,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       2376405906,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       2376389742,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			record:       false,
 			dealId:       2376436112,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			record:       false,
 			dealId:       2376434644,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			record:       false,
 			dealId:       2376134037,
 		},
 		{
 			cassetteName: "getdeal",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			record:       false,
 			dealId:       0,
 			skip:         true,
@@ -70,7 +70,7 @@ func TestGetDeal(t *testing.T) {
 		var dealIds []DealPathId
 		if tc.dealId == 0 {
 			// we gonna loop da loop!
-			client, err := getClient(t, tc.config, tc.record, tc.cassetteName)
+			client, err := getClient(t, tc.clientOpts, tc.record, tc.cassetteName)
 			require.NoErrorf(t, err, "could not create client")
 
 			deals, err := client.GetListOfDeals(context.Background(), WithLimitForListDeals(1000))
@@ -85,7 +85,7 @@ func TestGetDeal(t *testing.T) {
 
 		for _, dealId := range dealIds {
 			t.Run(fmt.Sprintf("Deal %d", dealId), func(tt *testing.T) {
-				client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
+				client, err := getClient(tt, tc.clientOpts, tc.record, tc.cassetteName)
 				require.NoErrorf(tt, err, "could not create client")
 
 				deal, err := client.GetDealForID(context.Background(), dealId)

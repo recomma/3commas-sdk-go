@@ -49,7 +49,7 @@ func TestListBots(t *testing.T) {
 	type tc struct {
 		name         string
 		cassetteName string
-		config       ClientConfig
+		clientOpts   []ThreeCommasClientOption
 		options      []ListBotsParamsOption
 		wantErr      string
 		record       bool
@@ -57,21 +57,21 @@ func TestListBots(t *testing.T) {
 
 	cases := []tc{
 		{
-			name:    "invalid auth",
-			config:  ClientConfig{APIKey: "somefakeapikey", PrivatePEM: []byte(fakeKey)},
-			options: []ListBotsParamsOption{},
-			wantErr: "API error 401: Unauthorized. Invalid or expired api key.",
+			name:       "invalid auth",
+			clientOpts: []ThreeCommasClientOption{WithAPIKey("somefakeapikey"), WithPrivatePEM([]byte(fakeKey))},
+			options:    []ListBotsParamsOption{},
+			wantErr:    "API error 401: Unauthorized. Invalid or expired api key.",
 		},
 		{
 			name:         "all bots",
 			cassetteName: "Bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			options:      []ListBotsParamsOption{},
 			record:       false,
 		},
 		{
-			name:   "filter on account",
-			config: config,
+			name:       "filter on account",
+			clientOpts: defaultTestOptions(),
 			// cassetteName: "Bots",
 			options: []ListBotsParamsOption{
 				WithAccountIdForListBots(33256512),
@@ -79,7 +79,7 @@ func TestListBots(t *testing.T) {
 		},
 		{
 			name:         "enabled bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			cassetteName: "Bots",
 			options: []ListBotsParamsOption{
 				WithScopeForListBots(Enabled),
@@ -88,7 +88,7 @@ func TestListBots(t *testing.T) {
 		},
 		{
 			name:         "disabled bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			cassetteName: "Bots",
 			options: []ListBotsParamsOption{
 				WithScopeForListBots(Disabled),
@@ -96,8 +96,8 @@ func TestListBots(t *testing.T) {
 			// record: true,
 		},
 		{
-			name:   "Bots from certain create date",
-			config: config,
+			name:       "Bots from certain create date",
+			clientOpts: defaultTestOptions(),
 			options: func() []ListBotsParamsOption {
 				ts, _ := time.Parse(time.RFC3339, "2025-07-04T17:07:14Z")
 				return []ListBotsParamsOption{
@@ -108,15 +108,15 @@ func TestListBots(t *testing.T) {
 		},
 		{
 			// Error method: runtime error: invalid memory address or nil pointer dereference) Error: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.
-			name:    "Subscription not active",
-			config:  config,
-			wantErr: "API error 429: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.",
+			name:       "Subscription not active",
+			clientOpts: defaultTestOptions(),
+			wantErr:    "API error 429: The request type 'read' is not available with your current subscription plan. Please upgrade your plan to use this type of request.",
 		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(tt *testing.T) {
-			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
+			client, err := getClient(tt, tc.clientOpts, tc.record, tc.cassetteName)
 			if err != nil {
 				tt.Fatalf("Could not create client: %s", err)
 			}
@@ -134,7 +134,7 @@ func TestListBots(t *testing.T) {
 }
 
 func TestCancelOrder(t *testing.T) {
-	client, err := getClient(t, config, true, "cancelOrder")
+	client, err := getClient(t, defaultTestOptions(), true, "cancelOrder")
 	require.NoErrorf(t, err, "could not create client")
 
 	deals, err := client.GetListOfDeals(context.Background(), WithBotIdForListDeals(16506279))
@@ -158,7 +158,7 @@ func TestGetListOfDeals(t *testing.T) {
 	type tc struct {
 		name         string
 		cassetteName string
-		config       ClientConfig
+		clientOpts   []ThreeCommasClientOption
 		options      []ListDealsParamsOption
 		wantErr      string
 		record       bool
@@ -169,13 +169,13 @@ func TestGetListOfDeals(t *testing.T) {
 		{
 			name:         "valid request",
 			cassetteName: "Bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			// record:       true,
 		},
 		{
 			name:         "specific bot 16403596",
 			cassetteName: "Bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			options: []ListDealsParamsOption{
 				WithBotIdForListDeals(16403596),
 			},
@@ -183,7 +183,7 @@ func TestGetListOfDeals(t *testing.T) {
 		{
 			name:         "specific bot 16511317",
 			cassetteName: "Bots16511317",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			record:       false,
 			options: []ListDealsParamsOption{
 				WithBotIdForListDeals(16511317),
@@ -193,7 +193,7 @@ func TestGetListOfDeals(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(tt *testing.T) {
-			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
+			client, err := getClient(tt, tc.clientOpts, tc.record, tc.cassetteName)
 			require.NoErrorf(tt, err, "could not create client")
 
 			bots := tc.bots
@@ -227,7 +227,7 @@ func TestGetTradesForDeal(t *testing.T) {
 	type tc struct {
 		name         string
 		cassetteName string
-		config       ClientConfig
+		clientOpts   []ThreeCommasClientOption
 		dealId       DealPathId
 		wantErr      string
 		record       bool
@@ -237,27 +237,27 @@ func TestGetTradesForDeal(t *testing.T) {
 		{
 			name:         "404",
 			cassetteName: "Bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       1374390720784,
 			wantErr:      "API error 404: Not Found",
 		},
 		{
 			name:         "valid request",
 			cassetteName: "Bots",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       2362612144,
 		},
 		{
 			name:         "lots of market orders",
 			cassetteName: "marketorders",
-			config:       config,
+			clientOpts:   defaultTestOptions(),
 			dealId:       2366275139,
 			// record:       true,
 		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(tt *testing.T) {
-			client, err := getClient(tt, tc.config, tc.record, tc.cassetteName)
+			client, err := getClient(tt, tc.clientOpts, tc.record, tc.cassetteName)
 			require.NoErrorf(tt, err, "could not create client")
 
 			trades, err := client.GetTradesForDeal(context.Background(), tc.dealId)
@@ -273,7 +273,7 @@ func TestGetTradesForDeal(t *testing.T) {
 }
 
 func TestGetMarketOrdersForDeal(t *testing.T) {
-	client, err := getClient(t, config, false, "marketorders")
+	client, err := getClient(t, defaultTestOptions(), false, "marketorders")
 	require.NoErrorf(t, err, "could not create client")
 
 	trades, err := client.GetMarketOrdersForDeal(context.Background(), 2366275139)
@@ -299,8 +299,8 @@ func TestGetMarketOrdersForDeal(t *testing.T) {
 	}
 }
 
-func getClient(t *testing.T, config ClientConfig, record bool, cassetteName string) (*ThreeCommasClient, error) {
-	opts := defaultRecorderOpts(record)
+func getClient(t *testing.T, clientOpts []ThreeCommasClientOption, record bool, cassetteName string) (*ThreeCommasClient, error) {
+	recorderOpts := defaultRecorderOpts(record)
 
 	base := strings.ReplaceAll(t.Name(), "/", "_")
 	cassette := filepath.Join("testdata", func() string {
@@ -310,7 +310,7 @@ func getClient(t *testing.T, config ClientConfig, record bool, cassetteName stri
 		return base
 	}())
 
-	r, err := recorder.New(cassette, opts...)
+	r, err := recorder.New(cassette, recorderOpts...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -323,7 +323,8 @@ func getClient(t *testing.T, config ClientConfig, record bool, cassetteName stri
 
 	httpClient := &http.Client{Transport: r}
 
-	return New3CommasClient(config, WithHTTPClient(httpClient))
+	// Add HTTP client as an internal option (need to support this)
+	return New3CommasClient(append(clientOpts, withHTTPClient(httpClient))...)
 }
 
 func getIntPointer(val int) *int {

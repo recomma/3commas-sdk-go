@@ -15,31 +15,90 @@ import (
 	"strings"
 )
 
-// ClientConfig is all the caller needs to supply.
-type ClientConfig struct {
-	BaseURL    string
-	APIKey     string
-	PrivatePEM []byte // PEM-encoded RSA PRIVATE KEY
+type clientConfig struct {
+	baseURL    string
+	apiKey     string
+	privatePEM []byte
+	planTier   PlanTier
+	httpClient HttpRequestDoer
 }
 
-// NewClient returns a fully-wired oapi-codegen client that
-// signs every request with RSA, has a ratelimit of 100req/min
-func New3CommasClient(cfg ClientConfig, opts ...ClientOption) (*ThreeCommasClient, error) {
-	priv, err := parseRSAPrivate(cfg.PrivatePEM)
+// ThreeCommasClientOption configures the 3commas client.
+type ThreeCommasClientOption func(*clientConfig)
+
+// WithAPIKey sets the API key for authentication.
+func WithAPIKey(key string) ThreeCommasClientOption {
+	return func(c *clientConfig) {
+		c.apiKey = key
+	}
+}
+
+// WithPrivatePEM sets the RSA private key for signing requests.
+func WithPrivatePEM(pem []byte) ThreeCommasClientOption {
+	return func(c *clientConfig) {
+		c.privatePEM = pem
+	}
+}
+
+// WithThreeCommasBaseURL sets the base URL for the API.
+// Defaults to https://api.3commas.io/public/api
+func WithThreeCommasBaseURL(url string) ThreeCommasClientOption {
+	return func(c *clientConfig) {
+		c.baseURL = url
+	}
+}
+
+// WithPlanTier sets the subscription plan tier for rate limiting.
+// Defaults to PlanExpert.
+func WithPlanTier(tier PlanTier) ThreeCommasClientOption {
+	return func(c *clientConfig) {
+		c.planTier = tier
+	}
+}
+
+// withHTTPClient is an internal option for testing
+func withHTTPClient(client HttpRequestDoer) ThreeCommasClientOption {
+	return func(c *clientConfig) {
+		c.httpClient = client
+	}
+}
+
+// New3CommasClient creates a fully-wired client with RSA signing and rate limiting.
+func New3CommasClient(opts ...ThreeCommasClientOption) (*ThreeCommasClient, error) {
+	cfg := &clientConfig{
+		baseURL:  "https://api.3commas.io/public/api",
+		planTier: PlanExpert,
+	}
+
+	for _, opt := range opts {
+		opt(cfg)
+	}
+
+	if cfg.apiKey == "" {
+		return nil, fmt.Errorf("API key is required")
+	}
+	if len(cfg.privatePEM) == 0 {
+		return nil, fmt.Errorf("private key PEM is required")
+	}
+
+	priv, err := parseRSAPrivate(cfg.privatePEM)
 	if err != nil {
 		return nil, err
 	}
 
-	signer := newRSASigner(cfg.APIKey, priv)
+	signer := newRSASigner(cfg.apiKey, priv)
 
-	if cfg.BaseURL == "" {
-		cfg.BaseURL = "https://api.3commas.io/public/api"
+	clientOpts := []ClientOption{
+		WithRequestEditorFn(signer),
+		WithThreeCommasRateLimits(cfg.planTier),
 	}
 
-	opts = append(opts, WithRequestEditorFn(signer))
-	opts = append(opts, WithThreeCommasRateLimits())
+	// If a custom HTTP client was provided (for testing), use it
+	if cfg.httpClient != nil {
+		clientOpts = append(clientOpts, WithHTTPClient(cfg.httpClient))
+	}
 
-	raw, err := NewClientWithResponses(cfg.BaseURL, opts...)
+	raw, err := NewClientWithResponses(cfg.baseURL, clientOpts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create API client: %w", err)
 	}

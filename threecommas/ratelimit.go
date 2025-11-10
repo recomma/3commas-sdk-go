@@ -11,6 +11,31 @@ import (
 	"golang.org/x/time/rate"
 )
 
+// PlanTier represents the 3commas subscription tier
+type PlanTier int
+
+const (
+	// PlanStarter: 5 requests per minute (read-only)
+	PlanStarter PlanTier = iota
+	// PlanPro: 50 requests per minute (read-only)
+	PlanPro
+	// PlanExpert: 120 requests per minute (read/write)
+	PlanExpert
+)
+
+func globalLimiterForTier(tier PlanTier) *rate.Limiter {
+	switch tier {
+	case PlanStarter:
+		return rate.NewLimiter(rate.Every(time.Minute/5), 5)
+	case PlanPro:
+		return rate.NewLimiter(rate.Every(time.Minute/50), 50)
+	case PlanExpert:
+		return rate.NewLimiter(rate.Every(time.Minute/120), 120)
+	default:
+		return globalLimiterForTier(PlanExpert)
+	}
+}
+
 type routeLimiter struct {
 	name       string
 	method     string
@@ -52,10 +77,9 @@ type rlEngine struct {
 	blocked map[string]time.Time // key: "global" or route.name -> blocked-until
 }
 
-func newRLEngine() *rlEngine {
+func newRLEngine(tier PlanTier) *rlEngine {
 	return &rlEngine{
-		// Correct 100/minute config: token every 600ms, burst 100
-		global:  rate.NewLimiter(rate.Every(time.Minute/100), 100),
+		global:  globalLimiterForTier(tier),
 		routes:  threeCommasRoutes(),
 		blocked: make(map[string]time.Time),
 	}
@@ -180,9 +204,15 @@ func parseRetryAfter(v string) time.Duration {
 	return 0
 }
 
-// Public option to install the limiter+backoff around the oapi-codegen client.
-func WithThreeCommasRateLimits() ClientOption {
+// WithThreeCommasRateLimits installs the rate limiter for the specified tier.
+// If tier is not specified, defaults to PlanExpert.
+func WithThreeCommasRateLimits(tier ...PlanTier) ClientOption {
 	return func(c *Client) error {
+		t := PlanExpert
+		if len(tier) > 0 {
+			t = tier[0]
+		}
+
 		// IMPORTANT: if c.Client is nil here, NewClient will NOT assign a default later
 		// once we set c.Client to our wrapper. So make sure the wrapper has a non-nil base.
 		base := c.Client
@@ -191,7 +221,7 @@ func WithThreeCommasRateLimits() ClientOption {
 		}
 		c.Client = &rateLimitDoer{
 			base: base,
-			eng:  newRLEngine(),
+			eng:  newRLEngine(t),
 		}
 		return nil
 	}
