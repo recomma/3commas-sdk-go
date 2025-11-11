@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"sync"
 	"time"
-
-	"golang.org/x/time/rate"
 )
 
 // PlanTier represents the 3commas subscription tier
@@ -23,16 +21,78 @@ const (
 	PlanExpert
 )
 
-func globalLimiterForTier(tier PlanTier) *rate.Limiter {
+// fixedWindowLimiter implements a fixed-window rate limiter that aligns to clock boundaries.
+// For example, with a 1-minute window, windows align to 12:30:00, 12:31:00, 12:32:00, etc.
+// This matches the 3commas API rate limiting behavior where limits reset at the start of each window.
+type fixedWindowLimiter struct {
+	windowSize  time.Duration
+	limit       int
+	mu          sync.Mutex
+	windowStart time.Time
+	count       int
+}
+
+func newFixedWindowLimiter(windowSize time.Duration, limit int) *fixedWindowLimiter {
+	return &fixedWindowLimiter{
+		windowSize: windowSize,
+		limit:      limit,
+	}
+}
+
+// Wait blocks until the limiter allows the request or context is cancelled.
+// It uses clock-aligned windows that reset at fixed time boundaries.
+func (l *fixedWindowLimiter) Wait(ctx context.Context) error {
+	for {
+		l.mu.Lock()
+		now := time.Now()
+
+		// Align to window boundary (e.g., 12:30:37 -> 12:30:00 for 1-minute window)
+		currentWindowStart := now.Truncate(l.windowSize)
+
+		// If we've entered a new window, reset the counter
+		if currentWindowStart.After(l.windowStart) {
+			l.windowStart = currentWindowStart
+			l.count = 0
+		}
+
+		// Check if we can make a request in this window
+		if l.count < l.limit {
+			l.count++
+			l.mu.Unlock()
+			return nil
+		}
+
+		// Need to wait for next window
+		nextWindow := l.windowStart.Add(l.windowSize)
+		l.mu.Unlock()
+
+		waitDuration := time.Until(nextWindow)
+		if waitDuration <= 0 {
+			// Window should have already passed, try again
+			continue
+		}
+
+		timer := time.NewTimer(waitDuration)
+		select {
+		case <-ctx.Done():
+			timer.Stop()
+			return ctx.Err()
+		case <-timer.C:
+			// Window expired, try again
+		}
+	}
+}
+
+func tierLimiterForPlan(tier PlanTier) *fixedWindowLimiter {
 	switch tier {
 	case PlanStarter:
-		return rate.NewLimiter(rate.Every(time.Minute/5), 5)
+		return newFixedWindowLimiter(time.Minute, 5)
 	case PlanPro:
-		return rate.NewLimiter(rate.Every(time.Minute/50), 50)
+		return newFixedWindowLimiter(time.Minute, 50)
 	case PlanExpert:
-		return rate.NewLimiter(rate.Every(time.Minute/120), 120)
+		return newFixedWindowLimiter(time.Minute, 120)
 	default:
-		return globalLimiterForTier(PlanExpert)
+		return tierLimiterForPlan(PlanExpert)
 	}
 }
 
@@ -40,7 +100,7 @@ type routeLimiter struct {
 	name       string
 	method     string
 	re         *regexp.Regexp
-	limiter    *rate.Limiter
+	limiter    *fixedWindowLimiter
 	mitigation time.Duration // how long to block after 429 (unless Retry-After overrides)
 }
 
@@ -50,36 +110,36 @@ func threeCommasRoutes() []routeLimiter {
 			name:       "deals_list",
 			method:     http.MethodGet,
 			re:         regexp.MustCompile(`^/ver1/deals$`),
-			limiter:    rate.NewLimiter(rate.Every(time.Minute/120), 120), // 120/min
+			limiter:    newFixedWindowLimiter(time.Minute, 120), // 120/min
 			mitigation: 60 * time.Second,
 		},
 		{
 			name:       "deal_show",
 			method:     http.MethodGet,
 			re:         regexp.MustCompile(`^/ver1/deals/\d+/show$`),
-			limiter:    rate.NewLimiter(rate.Every(time.Minute/120), 120), // 120/min
+			limiter:    newFixedWindowLimiter(time.Minute, 120), // 120/min
 			mitigation: 60 * time.Second,
 		},
 		{
 			name:       "smart_trades",
 			method:     http.MethodGet,
 			re:         regexp.MustCompile(`^/ver1/smart_trades(?:/|$)`),
-			limiter:    rate.NewLimiter(rate.Every((10*time.Second)/40), 40), // 40 / 10s
+			limiter:    newFixedWindowLimiter(10*time.Second, 40), // 40 / 10s
 			mitigation: 10 * time.Second,
 		},
 	}
 }
 
 type rlEngine struct {
-	global  *rate.Limiter
+	tier    *fixedWindowLimiter
 	routes  []routeLimiter
 	mu      sync.Mutex
-	blocked map[string]time.Time // key: "global" or route.name -> blocked-until
+	blocked map[string]time.Time // key: "tier" or route.name -> blocked-until
 }
 
 func newRLEngine(tier PlanTier) *rlEngine {
 	return &rlEngine{
-		global:  globalLimiterForTier(tier),
+		tier:    tierLimiterForPlan(tier),
 		routes:  threeCommasRoutes(),
 		blocked: make(map[string]time.Time),
 	}
@@ -141,7 +201,7 @@ type rateLimitDoer struct {
 
 func (d *rateLimitDoer) Do(req *http.Request) (*http.Response, error) {
 	// Respect any active blocks
-	if err := d.eng.waitBlocked(req.Context(), "global"); err != nil {
+	if err := d.eng.waitBlocked(req.Context(), "tier"); err != nil {
 		return nil, err
 	}
 	if matched := d.eng.match(req); matched != nil {
@@ -150,10 +210,11 @@ func (d *rateLimitDoer) Do(req *http.Request) (*http.Response, error) {
 		}
 	}
 
-	// Wait on global and per-route buckets
-	if err := d.eng.global.Wait(req.Context()); err != nil {
+	// Wait on TIER limiter first (subscription plan limit)
+	if err := d.eng.tier.Wait(req.Context()); err != nil {
 		return nil, err
 	}
+	// Wait on ROUTE limiter if matched (additional per-endpoint limit)
 	if matched := d.eng.match(req); matched != nil {
 		if err := matched.limiter.Wait(req.Context()); err != nil {
 			return nil, err
@@ -169,21 +230,25 @@ func (d *rateLimitDoer) Do(req *http.Request) (*http.Response, error) {
 	// Observe and react
 	switch resp.StatusCode {
 	case http.StatusTooManyRequests: // 429
-		block := 5 * time.Minute // global default per docs
+		// Getting a 429 means our rate limiting failed to prevent it.
+		// Since the TIER limit is the primary constraint for most users,
+		// we should block the TIER limiter (not just the route).
+		block := 5 * time.Minute // default per docs
 		if matched := d.eng.match(req); matched != nil {
 			block = matched.mitigation
 		}
 		if ra := parseRetryAfter(resp.Header.Get("Retry-After")); ra > 0 {
 			block = ra // prefer server hint
 		}
+		// Always block TIER limiter since it's the account-wide limit
+		d.eng.backoff("tier", block)
+		// Also block the specific route if matched
 		if matched := d.eng.match(req); matched != nil {
 			d.eng.backoff(matched.name, block)
-		} else {
-			d.eng.backoff("global", block)
 		}
 	case 418: // auto-ban
-		// Be conservative: set a generous global block so callers don’t loop.
-		d.eng.backoff("global", 10*time.Minute)
+		// Be conservative: set a generous block on the tier limiter.
+		d.eng.backoff("tier", 10*time.Minute)
 	}
 
 	return resp, nil
