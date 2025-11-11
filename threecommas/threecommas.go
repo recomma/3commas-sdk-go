@@ -15,27 +15,19 @@ import (
 	"strings"
 )
 
-type clientConfig struct {
-	baseURL    string
-	apiKey     string
-	privatePEM []byte
-	planTier   PlanTier
-	httpClient HttpRequestDoer
-}
-
-// ThreeCommasClientOption configures the 3commas client.
-type ThreeCommasClientOption func(*clientConfig)
+// ThreeCommasClientOption configures the 3commas client wrapper.
+type ThreeCommasClientOption func(*ThreeCommasClient)
 
 // WithAPIKey sets the API key for authentication.
 func WithAPIKey(key string) ThreeCommasClientOption {
-	return func(c *clientConfig) {
+	return func(c *ThreeCommasClient) {
 		c.apiKey = key
 	}
 }
 
 // WithPrivatePEM sets the RSA private key for signing requests.
 func WithPrivatePEM(pem []byte) ThreeCommasClientOption {
-	return func(c *clientConfig) {
+	return func(c *ThreeCommasClient) {
 		c.privatePEM = pem
 	}
 }
@@ -43,7 +35,7 @@ func WithPrivatePEM(pem []byte) ThreeCommasClientOption {
 // WithThreeCommasBaseURL sets the base URL for the API.
 // Defaults to https://api.3commas.io/public/api
 func WithThreeCommasBaseURL(url string) ThreeCommasClientOption {
-	return func(c *clientConfig) {
+	return func(c *ThreeCommasClient) {
 		c.baseURL = url
 	}
 }
@@ -51,58 +43,73 @@ func WithThreeCommasBaseURL(url string) ThreeCommasClientOption {
 // WithPlanTier sets the subscription plan tier for rate limiting.
 // Defaults to PlanExpert.
 func WithPlanTier(tier PlanTier) ThreeCommasClientOption {
-	return func(c *clientConfig) {
+	return func(c *ThreeCommasClient) {
 		c.planTier = tier
+	}
+}
+
+// WithClientOption allows passing through oapi-codegen ClientOptions for middleware,
+// logging, request modification, etc.
+func WithClientOption(opt ClientOption) ThreeCommasClientOption {
+	return func(c *ThreeCommasClient) {
+		c.clientOptions = append(c.clientOptions, opt)
 	}
 }
 
 // withHTTPClient is an internal option for testing
 func withHTTPClient(client HttpRequestDoer) ThreeCommasClientOption {
-	return func(c *clientConfig) {
+	return func(c *ThreeCommasClient) {
 		c.httpClient = client
 	}
 }
 
 // New3CommasClient creates a fully-wired client with RSA signing and rate limiting.
 func New3CommasClient(opts ...ThreeCommasClientOption) (*ThreeCommasClient, error) {
-	cfg := &clientConfig{
+	tc := &ThreeCommasClient{
 		baseURL:  "https://api.3commas.io/public/api",
 		planTier: PlanExpert,
 	}
 
+	// Apply wrapper configuration
 	for _, opt := range opts {
-		opt(cfg)
+		opt(tc)
 	}
 
-	if cfg.apiKey == "" {
+	// Validate required fields
+	if tc.apiKey == "" {
 		return nil, fmt.Errorf("API key is required")
 	}
-	if len(cfg.privatePEM) == 0 {
+	if len(tc.privatePEM) == 0 {
 		return nil, fmt.Errorf("private key PEM is required")
 	}
 
-	priv, err := parseRSAPrivate(cfg.privatePEM)
+	// Build RSA signer
+	priv, err := parseRSAPrivate(tc.privatePEM)
 	if err != nil {
 		return nil, err
 	}
+	signer := newRSASigner(tc.apiKey, priv)
 
-	signer := newRSASigner(cfg.apiKey, priv)
-
-	clientOpts := []ClientOption{
+	// Build ClientOptions: user options first, then auth, then rate limit
+	clientOpts := append([]ClientOption{}, tc.clientOptions...)
+	clientOpts = append(clientOpts,
 		WithRequestEditorFn(signer),
-		WithThreeCommasRateLimits(cfg.planTier),
-	}
+		WithThreeCommasRateLimits(tc.planTier),
+	)
 
 	// If a custom HTTP client was provided (for testing), use it
-	if cfg.httpClient != nil {
-		clientOpts = append(clientOpts, WithHTTPClient(cfg.httpClient))
+	if tc.httpClient != nil {
+		clientOpts = append(clientOpts, WithHTTPClient(tc.httpClient))
 	}
 
-	raw, err := NewClientWithResponses(cfg.baseURL, clientOpts...)
+	// Build underlying client
+	raw, err := NewClientWithResponses(tc.baseURL, clientOpts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create API client: %w", err)
 	}
-	return &ThreeCommasClient{ClientWithResponses: raw}, nil
+	tc.ClientWithResponses = raw
+
+	return tc, nil
 }
 
 func parseRSAPrivate(pemBytes []byte) (*rsa.PrivateKey, error) {
@@ -156,6 +163,13 @@ func sortedQuery(r *http.Request) string {
 
 type ThreeCommasClient struct {
 	*ClientWithResponses
+
+	baseURL       string
+	apiKey        string
+	privatePEM    []byte
+	planTier      PlanTier
+	httpClient    HttpRequestDoer
+	clientOptions []ClientOption
 }
 
 func (c *ThreeCommasClient) GetMarketOrdersForDeal(ctx context.Context, dealId DealPathId) ([]MarketOrder, error) {

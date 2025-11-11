@@ -93,6 +93,40 @@ If not specified, the SDK defaults to `PlanExpert` (120 req/min). The rate limit
 - Respects `Retry-After` headers from the server
 - Protects against IP auto-ban (418 responses) with 10-minute cooldown
 
+## Middleware and Request Customization
+
+The SDK supports custom middleware for logging, monitoring, and request modification through `WithClientOption`:
+
+```go
+import (
+	"context"
+	"log"
+	"net/http"
+
+	"github.com/recomma/3commas-sdk-go/threecommas"
+)
+
+// Custom request logger
+requestLogger := func(ctx context.Context, req *http.Request) error {
+	log.Printf("Making request: %s %s", req.Method, req.URL.Path)
+	return nil
+}
+
+client, err := threecommas.New3CommasClient(
+	threecommas.WithAPIKey("your-api-key"),
+	threecommas.WithPrivatePEM(privateKey),
+	threecommas.WithClientOption(
+		threecommas.WithRequestEditorFn(requestLogger),
+	),
+)
+```
+
+Multiple middleware can be chained, and they execute in order before the RSA authentication signer. This allows you to:
+- Log all HTTP requests and responses
+- Add custom headers or modify requests
+- Integrate with OpenTelemetry or other observability tools
+- Implement custom retry logic or circuit breakers
+
 ## Authentication
 
 This SDK uses RSA signature-based authentication with your API key and a PEM-encoded private key. Every request is signed using your private key per 3Commas API requirements.
@@ -135,6 +169,7 @@ if err := threecommas.GetErrorFromResponse(resp); err != nil {
 * Proper error parsing with descriptive messages
 * Support for typed request/response structs
 * Functional options pattern for clean, flexible configuration
+* Middleware support for logging, monitoring, and request customization
 * VCR-based integration tests using `go-vcr`
 
 ## Testing
