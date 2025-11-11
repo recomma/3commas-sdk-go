@@ -86,8 +86,10 @@ client, err := threecommas.New3CommasClient(
 ```
 
 If not specified, the SDK defaults to `PlanExpert` (120 req/min). The rate limiter:
-- Proactively prevents 429 (rate limit) errors using token bucket algorithm
-- Automatically handles 429 responses with backoff
+- Uses fixed-window rate limiting aligned to clock boundaries (matching 3Commas API behavior)
+- Allows bursts within the same time window (e.g., all 5 requests in 2 seconds is fine for Starter)
+- Proactively prevents 429 (rate limit) errors before they occur
+- Automatically handles 429 responses with backoff if limits are exceeded
 - Respects `Retry-After` headers from the server
 - Protects against IP auto-ban (418 responses) with 10-minute cooldown
 

@@ -133,11 +133,11 @@ func TestDefaultPlanTier(t *testing.T) {
 	// Just verify the client was created successfully
 }
 
-func TestGlobalLimiterForTier(t *testing.T) {
+func TestTierLimiterForPlan(t *testing.T) {
 	tests := []struct {
 		name          string
 		tier          PlanTier
-		expectedBurst int
+		expectedLimit int
 	}{
 		{"Starter", PlanStarter, 5},
 		{"Pro", PlanPro, 50},
@@ -146,9 +146,10 @@ func TestGlobalLimiterForTier(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			limiter := globalLimiterForTier(tt.tier)
+			limiter := tierLimiterForPlan(tt.tier)
 			require.NotNil(t, limiter)
-			require.Equal(t, tt.expectedBurst, limiter.Burst())
+			require.Equal(t, tt.expectedLimit, limiter.limit)
+			require.Equal(t, time.Minute, limiter.windowSize)
 		})
 	}
 }
